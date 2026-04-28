@@ -196,7 +196,8 @@ td.primary{color:var(--text)}
 .actu-body strong{color:var(--text)}
 .actu-body .sub-item{display:block;padding-left:1rem;position:relative}
 .actu-body .sub-item::before{content:'·';position:absolute;left:.2rem;color:var(--text3)}
-.copy-btn{margin-top:.85rem;padding:5px 13px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:.68rem;cursor:pointer;font-family:'DM Mono',monospace;transition:all .15s}
+.actu-discours{display:none;margin-top:.75rem;background:rgba(0,0,0,.04);border-radius:var(--r);padding:.85rem 1rem;font-size:.75rem;color:var(--text2);line-height:1.7;white-space:pre-wrap;border-left:3px solid var(--border2)}
+.actu-discours.visible{display:block}border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:.68rem;cursor:pointer;font-family:'DM Mono',monospace;transition:all .15s}
 .copy-btn:hover{border-color:var(--border2);color:var(--text)}
 
 .guide-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start}
@@ -495,7 +496,31 @@ td.primary{color:var(--text)}
 Afin de ne pas prolonger les délais, les analyses ont été confiées à un laboratoire partenaire (Leverkusen via Belgique ou Laboklin — décision en cours).
 
 Pour rassurer le client, voici le discours à tenir :</div>
-      <button class="copy-btn" onclick="copyText('Bonjour,\n\nNous rencontrons actuellement un incident technique sur l\'un de nos automates, dont la réparation prend un peu plus de temps que prévu.\n\nAfin de ne pas prolonger davantage les délais, nous avons pris la décision de confier les analyses à un laboratoire partenaire, sélectionné pour la qualité équivalente de ses prestations.\n\nConcrètement, cela implique un léger délai supplémentaire sur la mise en analyse, et donc sur la transmission des résultats.\n\nSoyez assuré(e) que :\n• vos prélèvements sont bien pris en charge en toute sécurité,\n• le sujet est traité en priorité absolue par nos équipes,\n• nous faisons le maximum pour limiter l\'impact pour vous et vos patients.\n\n📅 Nous prévoyons un rendu des résultats d\'ici la fin de semaine, ou tout début de semaine prochaine au plus tard.\n\nNous sommes sincèrement désolés pour ce contretemps et vous remercions pour votre compréhension.\nNotre priorité reste de vous garantir des résultats fiables, dans les meilleures conditions.\n\nBien entendu, je reste disponible si vous avez la moindre question ou un besoin particulier.\n\nCordialement')">📋 Copier le discours client</button>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.85rem">
+        <button class="copy-btn" onclick="toggleActuDiscours('discours-blot',this)">💬 Voir le discours client</button>
+        <button class="copy-btn" onclick="copyText('Bonjour,\n\nNous rencontrons actuellement un incident technique sur l\'un de nos automates, dont la réparation prend un peu plus de temps que prévu.\n\nAfin de ne pas prolonger davantage les délais, nous avons pris la décision de confier les analyses à un laboratoire partenaire, sélectionné pour la qualité équivalente de ses prestations.\n\nConcrètement, cela implique un léger délai supplémentaire sur la mise en analyse, et donc sur la transmission des résultats.\n\nSoyez assuré(e) que :\n• vos prélèvements sont bien pris en charge en toute sécurité,\n• le sujet est traité en priorité absolue par nos équipes,\n• nous faisons le maximum pour limiter l\'impact pour vous et vos patients.\n\n📅 Nous prévoyons un rendu des résultats d\'ici la fin de semaine, ou tout début de semaine prochaine au plus tard.\n\nNous sommes sincèrement désolés pour ce contretemps et vous remercions pour votre compréhension.\nNotre priorité reste de vous garantir des résultats fiables, dans les meilleures conditions.\n\nBien entendu, je reste disponible si vous avez la moindre question ou un besoin particulier.\n\nCordialement')">📋 Copier</button>
+      </div>
+      <div id="discours-blot" class="actu-discours">Bonjour,
+
+Nous rencontrons actuellement un incident technique sur l'un de nos automates, dont la réparation prend un peu plus de temps que prévu.
+
+Afin de ne pas prolonger davantage les délais, nous avons pris la décision de confier les analyses à un laboratoire partenaire, sélectionné pour la qualité équivalente de ses prestations.
+
+Concrètement, cela implique un léger délai supplémentaire sur la mise en analyse, et donc sur la transmission des résultats.
+
+Soyez assuré(e) que :
+• vos prélèvements sont bien pris en charge en toute sécurité,
+• le sujet est traité en priorité absolue par nos équipes,
+• nous faisons le maximum pour limiter l'impact pour vous et vos patients.
+
+📅 Nous prévoyons un rendu des résultats d'ici la fin de semaine, ou tout début de semaine prochaine au plus tard.
+
+Nous sommes sincèrement désolés pour ce contretemps et vous remercions pour votre compréhension.
+Notre priorité reste de vous garantir des résultats fiables, dans les meilleures conditions.
+
+Bien entendu, je reste disponible si vous avez la moindre question ou un besoin particulier.
+
+Cordialement</div>
     </div>
 
     <div class="actu-card urgent">
@@ -510,14 +535,40 @@ Pour rassurer le client, voici le discours à tenir :</div>
 <strong>Marche à suivre :</strong> Les échantillons peuvent toujours être envoyés → ils seront conservés congelés.
 
 <strong>Prélèvement attendu :</strong> plasma EDTA congelé — code <strong>PTHRP</strong></div>
-      <button class="copy-btn" onclick="copyText('Bonjour,\n\nNous vous informons que l\'analyse PTHrP est actuellement indisponible en raison d\'un problème mondial d\'approvisionnement en réactifs chez notre partenaire.\n\nLa reprise est estimée à la mi-juin (date à confirmer). Les clients concernés ont été informés.\n\nBonne nouvelle : vous pouvez continuer à nous envoyer vos échantillons — ils seront conservés congelés dans l\'attente de la reprise de l\'analyse.\n\nPrestation attendue : plasma EDTA congelé (code PTHRP).\n\nNous vous remercions de votre compréhension et restons disponibles pour toute question.\n\nCordialement')">📋 Copier le discours client</button>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.85rem">
+        <button class="copy-btn" onclick="toggleActuDiscours('discours-pthrp',this)">💬 Voir le discours client</button>
+        <button class="copy-btn" onclick="copyText('Bonjour,\n\nNous vous informons que l\'analyse PTHrP est actuellement indisponible en raison d\'un problème mondial d\'approvisionnement en réactifs chez notre partenaire.\n\nLa reprise est estimée à la mi-juin (date à confirmer). Les clients concernés ont été informés.\n\nBonne nouvelle : vous pouvez continuer à nous envoyer vos échantillons — ils seront conservés congelés dans l\'attente de la reprise de l\'analyse.\n\nPrestation attendue : plasma EDTA congelé (code PTHRP).\n\nNous vous remercions de votre compréhension et restons disponibles pour toute question.\n\nCordialement')">📋 Copier</button>
+      </div>
+      <div id="discours-pthrp" class="actu-discours">Bonjour,
+
+Nous vous informons que l'analyse PTHrP est actuellement indisponible en raison d'un problème mondial d'approvisionnement en réactifs chez notre partenaire.
+
+La reprise est estimée à la mi-juin (date à confirmer). Les clients concernés ont été informés.
+
+Bonne nouvelle : vous pouvez continuer à nous envoyer vos échantillons — ils seront conservés congelés dans l'attente de la reprise de l'analyse.
+
+Prestation attendue : plasma EDTA congelé (code PTHRP).
+
+Nous vous remercions de votre compréhension et restons disponibles pour toute question.
+
+Cordialement</div>
     </div>
 
     <div class="actu-card warning">
       <div class="actu-tag warning">🟡 À ANTICIPER</div>
       <div class="actu-title">Impact jours fériés — délais supplémentaires</div>
       <div class="actu-body"><strong>À prévoir :</strong> Compter +24h sur la mise en technique lors des jours fériés, ce qui peut entraîner +24h supplémentaires sur les délais de résultats.</div>
-      <button class="copy-btn" onclick="copyText('Bonjour,\n\nEn raison du jour férié à venir, veuillez noter qu\'un délai supplémentaire de 24h est à prévoir sur la mise en technique, pouvant entraîner un délai équivalent sur la transmission de vos résultats.\n\nNous vous remercions de votre compréhension.\n\nCordialement')">📋 Copier le discours client</button>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.85rem">
+        <button class="copy-btn" onclick="toggleActuDiscours('discours-feries',this)">💬 Voir le discours client</button>
+        <button class="copy-btn" onclick="copyText('Bonjour,\n\nEn raison du jour férié à venir, veuillez noter qu\'un délai supplémentaire de 24h est à prévoir sur la mise en technique, pouvant entraîner un délai équivalent sur la transmission de vos résultats.\n\nNous vous remercions de votre compréhension.\n\nCordialement')">📋 Copier</button>
+      </div>
+      <div id="discours-feries" class="actu-discours">Bonjour,
+
+En raison du jour férié à venir, veuillez noter qu'un délai supplémentaire de 24h est à prévoir sur la mise en technique, pouvant entraîner un délai équivalent sur la transmission de vos résultats.
+
+Nous vous remercions de votre compréhension.
+
+Cordialement</div>
     </div>
 
     <div class="actu-card warning">
@@ -525,11 +576,18 @@ Pour rassurer le client, voici le discours à tenir :</div>
       <div class="actu-title">Prélèvements fragiles — semaine du 25 mai</div>
       <div class="actu-body"><strong>Consigne :</strong> Pour les prélèvements fragiles :
   → À envoyer idéalement le vendredi au plus tard.
-  → Pour ceux réalisés vendredi fin de journée ou samedi : décaler si possible au début de semaine suivante.
+  → Pour ceux réalisés vendredi fin de journée ou samedi : décaler si possible au début de semaine suivante.</div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.85rem">
+        <button class="copy-btn" onclick="toggleActuDiscours('discours-prelvt',this)">💬 Voir le discours client</button>
+        <button class="copy-btn" onclick="copyText('Bonjour,\n\nSi vous avez planifié des prélèvements le vendredi 22 mai en fin de journée ou le samedi 23 mai, nous vous invitons à les reporter, dans la mesure du possible, au début de semaine prochaine afin de préserver au maximum la stabilité du prélèvement.\n\nNous restons disponibles pour toute question.\n\nCordialement')">📋 Copier</button>
+      </div>
+      <div id="discours-prelvt" class="actu-discours">Bonjour,
 
-<strong>👉 Discours client :</strong>
-Si vous avez planifié des prélèvements le vendredi 22 mai en fin de journée ou le samedi 23 mai, nous vous invitons à les reporter, dans la mesure du possible, au début de semaine prochaine afin de préserver au maximum la stabilité du prélèvement.</div>
-      <button class="copy-btn" onclick="copyText('Bonjour,\n\nSi vous avez planifié des prélèvements le vendredi 22 mai en fin de journée ou le samedi 23 mai, nous vous invitons à les reporter, dans la mesure du possible, au début de semaine prochaine afin de préserver au maximum la stabilité du prélèvement.\n\nNous restons disponibles pour toute question.\n\nCordialement')">📋 Copier le discours client</button>
+Si vous avez planifié des prélèvements le vendredi 22 mai en fin de journée ou le samedi 23 mai, nous vous invitons à les reporter, dans la mesure du possible, au début de semaine prochaine afin de préserver au maximum la stabilité du prélèvement.
+
+Nous restons disponibles pour toute question.
+
+Cordialement</div>
     </div>
 
   </div>
@@ -1148,6 +1206,13 @@ function sendDossierToSheet(d, status, elapsed) {
 }
 
 // ─── ACTUS ────────────────────────────────────────────────────────
+function toggleActuDiscours(id, btn) {
+  const el = document.getElementById(id);
+  const isOpen = el.classList.contains('visible');
+  el.classList.toggle('visible');
+  btn.textContent = isOpen ? '💬 Voir le discours client' : '💬 Masquer le discours';
+}
+
 function copyText(text){
   navigator.clipboard.writeText(text).then(()=>showToast('✓ Copié dans le presse-papier !'));
 }
