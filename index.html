@@ -757,7 +757,10 @@ function updateValidBar() {
 
 function resetSelection() {
   selectedCats = [];
-  document.querySelectorAll('.cat-btn.selected').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.cat-btn').forEach(b => {
+    b.classList.remove('selected');
+    b.classList.remove('flash');
+  });
   updateValidBar();
 }
 
