@@ -245,6 +245,32 @@ td.primary{color:var(--text)}
 
 <!-- ══ SAISIE ══ -->
 <div class="page active" id="page-saisie">
+
+  <!-- COMPTEURS DU JOUR -->
+  <div style="display:flex;gap:.75rem;margin-bottom:1.5rem;flex-wrap:wrap">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.75rem 1.25rem;display:flex;align-items:center;gap:.75rem">
+      <span style="font-size:1.4rem">📞</span>
+      <div>
+        <div style="font-size:.58rem;color:var(--text3);letter-spacing:.06em">APPELS AUJOURD'HUI</div>
+        <div style="font-size:1.6rem;font-family:'DM Serif Display',serif;color:var(--text)" id="cptTel">0</div>
+      </div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.75rem 1.25rem;display:flex;align-items:center;gap:.75rem">
+      <span style="font-size:1.4rem">✉️</span>
+      <div>
+        <div style="font-size:.58rem;color:var(--text3);letter-spacing:.06em">EMAILS AUJOURD'HUI</div>
+        <div style="font-size:1.6rem;font-family:'DM Serif Display',serif;color:var(--text)" id="cptMail">0</div>
+      </div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:.75rem 1.25rem;display:flex;align-items:center;gap:.75rem">
+      <span style="font-size:1.4rem">📊</span>
+      <div>
+        <div style="font-size:.58rem;color:var(--text3);letter-spacing:.06em">TOTAL AUJOURD'HUI</div>
+        <div style="font-size:1.6rem;font-family:'DM Serif Display',serif;color:var(--blue)" id="cptTotal">0</div>
+      </div>
+    </div>
+  </div>
+
   <div class="section-label" style="margin-bottom:.7rem">Canal de contact</div>
   <div class="canal-row">
     <button class="canal-btn" data-c="telephone" onclick="selectCanal('telephone',this)">📞 Téléphone</button>
@@ -691,6 +717,7 @@ function boot() {
   const now = new Date();
   document.getElementById('navDate').textContent = now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('dDate').value = now.toISOString().split('T')[0];
+  updateDailyCounters();
 }
 
 function showPage(id, btn) {
@@ -1134,7 +1161,17 @@ function showDiscoursRow(type, sub){
   navigator.clipboard.writeText(text).then(()=>showToast('✓ Script standard copié !'));
 }
 
-function delDos(id){dossiers=dossiers.filter(d=>d.id!==id);save();renderDossiers();}
+function delDos(id){
+  const d = dossiers.find(d => d.id === id);
+  if (d) {
+    const params = new URLSearchParams({ action: 'delete', sheet: 'dossiers', numero: d.num, agent }).toString();
+    const img = new Image();
+    img.src = SHEET_URL + '?' + params;
+  }
+  dossiers = dossiers.filter(d => d.id !== id);
+  save(); renderDossiers();
+  showToast('✓ Supprimé');
+}
 
 function exportDossiers(){
   if(!dossiers.length){showToast('Aucun dossier');return;}
@@ -1145,7 +1182,7 @@ function exportDossiers(){
 }
 
 // ─── GOOGLE SHEETS SYNC ───────────────────────────────────────────
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzmMczcRBCFj4LeWRooNA6CfUgf799N2W27JsfwrOD0zuewpAA1dkXznNwvErcVPH7C/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbx8bc711tbRGcmoXDUGEc2yEWHw1HRnSM5xwMhOf7pgMuZt_yqc17YqFQ_vvLEYZMsK/exec';
 
 function sendToSheet(data) {
   const params = new URLSearchParams(data).toString();
@@ -1182,7 +1219,21 @@ function copyText(text){
   navigator.clipboard.writeText(text).then(()=>showToast('✓ Copié dans le presse-papier !'));
 }
 
-function save(){localStorage.setItem('agent_appels',JSON.stringify(appels));localStorage.setItem('agent_dossiers',JSON.stringify(dossiers));}
+function updateDailyCounters() {
+  const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+  const todayAppels = appels.filter(a => new Date(a.dt) >= todayStart);
+  const tels = todayAppels.filter(a => a.canal === 'telephone').length;
+  const mails = todayAppels.filter(a => a.canal === 'email').length;
+  document.getElementById('cptTel').textContent = tels;
+  document.getElementById('cptMail').textContent = mails;
+  document.getElementById('cptTotal').textContent = tels + mails;
+}
+
+function save(){
+  localStorage.setItem('agent_appels',JSON.stringify(appels));
+  localStorage.setItem('agent_dossiers',JSON.stringify(dossiers));
+  updateDailyCounters();
+}
 
 function showToast(msg){
   const t=document.getElementById('toast');
