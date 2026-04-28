@@ -608,7 +608,7 @@ function boot() {
   document.getElementById('navDate').textContent = now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('dDate').value = now.toISOString().split('T')[0];
   updateDailyCounters();
-  renderFaq();
+  setTimeout(renderFaq, 100);
 }
 
 const FAQS = [
