@@ -199,7 +199,19 @@ td.primary{color:var(--text)}
 .copy-btn{margin-top:.85rem;padding:5px 13px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:.68rem;cursor:pointer;font-family:'DM Mono',monospace;transition:all .15s}
 .copy-btn:hover{border-color:var(--border2);color:var(--text)}
 
-/* GUIDE */
+.guide-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start}
+@media(max-width:700px){.guide-layout{grid-template-columns:1fr}}
+
+/* FAQ ACCORDION */
+.faq-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:.5rem;overflow:hidden}
+.faq-q{width:100%;text-align:left;padding:.85rem 1rem;font-size:.78rem;color:var(--text);font-family:'DM Mono',monospace;background:none;border:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.5rem;transition:background .15s}
+.faq-q:hover{background:var(--surface2)}
+.faq-q .arrow{font-size:.7rem;color:var(--text3);transition:transform .2s;flex-shrink:0}
+.faq-q.open{background:var(--surface2)}
+.faq-q.open .arrow{transform:rotate(180deg)}
+.faq-a{display:none;padding:.75rem 1rem 1rem;font-size:.75rem;color:var(--text2);line-height:1.65;border-top:1px solid var(--border)}
+.faq-a strong{color:var(--text)}
+.faq-a.visible{display:block}
 .guide-card{display:flex;gap:1rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem;margin-bottom:1rem}
 .guide-step{width:28px;height:28px;border-radius:50%;background:var(--text);color:#FAFAF8;font-size:.8rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Serif Display',serif;font-size:.95rem}
 .guide-content{flex:1;min-width:0}
@@ -526,136 +538,14 @@ Si vous avez planifié des prélèvements le vendredi 22 mai en fin de journée 
 <!-- ══ GUIDE ══ -->
 <div class="page" id="page-guide">
   <div style="max-width:720px;margin:0 auto">
-
-    <div style="margin-bottom:1.75rem">
-      <div style="font-size:1.1rem;font-weight:500;margin-bottom:.3rem">❓ Comment utiliser cet outil</div>
-      <div style="font-size:.78rem;color:var(--text3)">Guide rapide à l'usage de l'équipe</div>
+    <div style="margin-bottom:1.5rem">
+      <div style="font-size:1rem;font-weight:500;margin-bottom:.2rem">❓ Guide & Questions fréquentes</div>
+      <div style="font-size:.72rem;color:var(--text3)">Cliquez sur une question pour voir la réponse</div>
     </div>
-
-    <!-- ÉTAPE 1 -->
-    <div class="guide-card">
-      <div class="guide-step">1</div>
-      <div class="guide-content">
-        <div class="guide-title">📞 SAISIE — Enregistrer un contact</div>
-        <div class="guide-body">
-          <p>C'est l'onglet principal — celui que vous utilisez à chaque appel ou email reçu.</p>
-          <ul>
-            <li>Commencez par sélectionner le <strong>canal</strong> : 📞 Téléphone ou ✉️ Email. <em>Sans ce choix, aucun bouton ne fonctionne.</em></li>
-            <li>Cliquez ensuite sur <strong>une ou plusieurs catégories</strong> qui correspondent à la demande du client — elles se surlignent en bleu.</li>
-            <li>Une barre noire apparaît en bas avec le résumé de vos sélections. Cliquez <strong>✓ Valider le contact</strong> pour tout enregistrer en une fois.</li>
-            <li>Un seul appel avec 3 sujets = 3 catégories sélectionnées + 1 clic Valider. Chaque catégorie sera comptée individuellement dans vos stats.</li>
-            <li>Si aucune catégorie ne correspond exactement, utilisez le bouton <strong>Autre</strong> en bas de chaque colonne — il s'enregistre directement sans validation.</li>
-          </ul>
-          <div class="guide-tip">💡 Astuce : vous pouvez changer de canal entre deux appels, la sélection en cours sera réinitialisée automatiquement.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ÉTAPE 2 -->
-    <div class="guide-card">
-      <div class="guide-step">2</div>
-      <div class="guide-content">
-        <div class="guide-title">📊 STATS — Suivre votre activité</div>
-        <div class="guide-body">
-          <p>Consultez vos statistiques personnelles en temps réel.</p>
-          <ul>
-            <li>Utilisez les filtres de période : <strong>Aujourd'hui / Cette semaine / Ce mois / Tout</strong>.</li>
-            <li>Les deux graphiques montrent la <strong>volumétrie</strong> de vos appels et emails, avec la répartition par couleur selon la raison du contact.</li>
-            <li>La <strong>heatmap</strong> en bas montre votre activité sur les 28 derniers jours — plus la case est foncée, plus vous avez eu de contacts ce jour-là.</li>
-            <li>Le bouton <strong>↓ Exporter Excel</strong> génère un fichier avec tous vos contacts de la période.</li>
-          </ul>
-          <div class="guide-tip">💡 Le total "Cas gérés" en haut à gauche correspond à tous les contacts enregistrés sur la période sélectionnée.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ÉTAPE 3 -->
-    <div class="guide-card">
-      <div class="guide-step">3</div>
-      <div class="guide-content">
-        <div class="guide-title">🗂 HISTORIQUE — Retrouver un contact</div>
-        <div class="guide-body">
-          <p>Liste chronologique de tous vos contacts enregistrés.</p>
-          <ul>
-            <li>Filtrez par <strong>canal</strong> (Tél / Email) ou par <strong>catégorie</strong> via le menu déroulant.</li>
-            <li>La barre de <strong>recherche</strong> permet de trouver rapidement une catégorie.</li>
-            <li>Le bouton <strong>✕</strong> en fin de ligne supprime un contact si saisi par erreur.</li>
-            <li>Export Excel disponible pour partager votre historique si besoin.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- ÉTAPE 4 -->
-    <div class="guide-card">
-      <div class="guide-step">4</div>
-      <div class="guide-content">
-        <div class="guide-title">⏱ DÉLAIS — Vérifier si un dossier est en retard</div>
-        <div class="guide-body">
-          <p>Outil de suivi des délais réglementaires selon le type d'analyse.</p>
-          <ul>
-            <li>Saisissez le <strong>n° de dossier</strong>, la <strong>date de réception</strong>, et sélectionnez le <strong>type d'analyse</strong> (Histo / Cyto / Bact) puis le sous-type.</li>
-            <li>L'outil calcule immédiatement si le dossier est <strong>✅ dans les délais</strong>, <strong>🟡 à la limite</strong> ou <strong>🔴 en retard</strong>.</li>
-            <li>En cas de retard ou de limite, un <strong>discours client</strong> apparaît automatiquement avec 3 versions : Standard, Premium, Client mécontent.</li>
-            <li>Cliquez sur <strong>📋 Copier</strong> pour coller le script directement dans votre réponse.</li>
-            <li>Dans le tableau, le bouton <strong>💬 Script</strong> copie directement le discours standard en un clic.</li>
-          </ul>
-          <div class="guide-table">
-            <div class="guide-table-title">Rappel des délais</div>
-            <table style="width:100%;border-collapse:collapse;font-size:.72rem">
-              <thead><tr><th style="text-align:left;padding:5px 8px;background:var(--surface2);border:1px solid var(--border)">Type</th><th style="text-align:left;padding:5px 8px;background:var(--surface2);border:1px solid var(--border)">Sous-type</th><th style="text-align:left;padding:5px 8px;background:var(--surface2);border:1px solid var(--border)">Délai max</th></tr></thead>
-              <tbody>
-                <tr><td style="padding:5px 8px;border:1px solid var(--border)">🔬 Histo</td><td style="padding:5px 8px;border:1px solid var(--border)">Classique</td><td style="padding:5px 8px;border:1px solid var(--border)">21 jours calendaires</td></tr>
-                <tr><td style="padding:5px 8px;border:1px solid var(--border)">🔬 Histo</td><td style="padding:5px 8px;border:1px solid var(--border)">VIP / Urgent</td><td style="padding:5px 8px;border:1px solid var(--border)">15 jours calendaires</td></tr>
-                <tr><td style="padding:5px 8px;border:1px solid var(--border)">🔬 Histo</td><td style="padding:5px 8px;border:1px solid var(--border)">Grosse pièce</td><td style="padding:5px 8px;border:1px solid var(--border)">23 jours calendaires</td></tr>
-                <tr><td style="padding:5px 8px;border:1px solid var(--border)">🧫 Cyto</td><td style="padding:5px 8px;border:1px solid var(--border)">Urgence</td><td style="padding:5px 8px;border:1px solid var(--border)">2 jours calendaires</td></tr>
-                <tr><td style="padding:5px 8px;border:1px solid var(--border)">🧫 Cyto</td><td style="padding:5px 8px;border:1px solid var(--border)">Liquide classique (ACYLY)</td><td style="padding:5px 8px;border:1px solid var(--border)">3 jours calendaires</td></tr>
-                <tr><td style="padding:5px 8px;border:1px solid var(--border)">🧫 Cyto</td><td style="padding:5px 8px;border:1px solid var(--border)">Lame classique (ACYLA)</td><td style="padding:5px 8px;border:1px solid var(--border)">5 jours calendaires</td></tr>
-                <tr><td style="padding:5px 8px;border:1px solid var(--border)">🦠 Bact</td><td style="padding:5px 8px;border:1px solid var(--border)">Classique</td><td style="padding:5px 8px;border:1px solid var(--border)">8 jours calendaires (3-4j si négatif, jusqu'à 8j si positif)</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ÉTAPE 5 -->
-    <div class="guide-card">
-      <div class="guide-step">5</div>
-      <div class="guide-content">
-        <div class="guide-title">📌 ACTUS — Points importants du moment</div>
-        <div class="guide-body">
-          <p>Cet onglet contient les <strong>informations clés en cours</strong> à connaître avant de répondre aux clients : pannes, indisponibilités, consignes particulières.</p>
-          <ul>
-            <li>Consultez-le <strong>en début de journée</strong> pour être à jour.</li>
-            <li>Chaque fiche dispose d'un bouton <strong>📋 Copier le discours client</strong> pour répondre rapidement et de façon cohérente.</li>
-            <li>Les fiches sont classées par priorité : 🔴 Incident en cours → 🟡 À anticiper → 🔵 Information.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- DONNÉES -->
-    <div class="guide-card">
-      <div class="guide-step" style="background:var(--surface2);color:var(--text3)">ℹ</div>
-      <div class="guide-content">
-        <div class="guide-title">🔒 Données & confidentialité</div>
-        <div class="guide-body">
-          <p>Toutes vos données sont <strong>stockées localement dans votre navigateur</strong>, sur votre propre ordinateur. Rien n'est envoyé sur internet.</p>
-          <ul>
-            <li>Vos données persistent d'une session à l'autre tant que vous n'effacez pas le cache du navigateur.</li>
-            <li>Chaque agent a son propre fichier — les données ne sont pas partagées entre collègues.</li>
-            <li>En cas de perte de données (changement d'ordinateur, etc.), pensez à exporter régulièrement via <strong>↓ Excel</strong>.</li>
-          </ul>
-          <div class="guide-tip">💡 Ce fichier .html est autonome : vous pouvez l'ouvrir n'importe où, sans connexion internet, sans installation.</div>
-        </div>
-      </div>
-    </div>
-
+    <div id="fullFaqList"></div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
 
 <script>
 let agent = localStorage.getItem('agent_nom') || '';
@@ -718,7 +608,50 @@ function boot() {
   document.getElementById('navDate').textContent = now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('dDate').value = now.toISOString().split('T')[0];
   updateDailyCounters();
+  renderFaq();
 }
+
+const FAQS = [
+  { cat: '📖 Utiliser l\'outil', q: '📞 SAISIE — Comment enregistrer un contact ?', a: `<ul><li>Sélectionnez le <strong>canal</strong> : 📞 Téléphone ou ✉️ Email — obligatoire avant tout.</li><li>Cliquez sur <strong>une ou plusieurs catégories</strong> — elles se surlignent en bleu.</li><li>La barre noire en bas affiche vos sélections → cliquez <strong>✓ Valider le contact</strong>.</li><li>Un appel avec 3 sujets = 3 catégories + 1 clic Valider.</li><li>Bouton <strong>Autre</strong> en bas de chaque colonne si aucune catégorie ne correspond.</li></ul><div class="guide-tip">💡 Changer de canal réinitialise la sélection en cours.</div>` },
+  { cat: '📖 Utiliser l\'outil', q: '📊 STATS — Comment lire mes statistiques ?', a: `<ul><li>Filtrez par <strong>Aujourd'hui / Semaine / Mois / Tout</strong>.</li><li>Deux graphiques : volumétrie tél et email par raison de contact, avec répartition colorée.</li><li>Heatmap des 28 derniers jours — plus c'est foncé, plus vous avez eu de contacts.</li><li>↓ Export Excel pour partager vos données.</li></ul>` },
+  { cat: '📖 Utiliser l\'outil', q: '🗂 HISTORIQUE — Comment retrouver ou supprimer un contact ?', a: `<ul><li>Filtrez par canal ou catégorie via le menu déroulant.</li><li>Bouton <strong>✕</strong> pour supprimer — supprime aussi du Google Sheet automatiquement.</li><li>La colonne <strong>ID Appel</strong> regroupe tous les sujets d'un même contact.</li></ul>` },
+  { cat: '📖 Utiliser l\'outil', q: '⏱ DÉLAIS — Comment vérifier si un dossier est en retard ?', a: `<ul><li>Saisissez n° dossier, date de réception, type et sous-type.</li><li>Statut calculé en temps réel : ✅ OK · 🟡 Limite · 🔴 Retard.</li><li>En retard → discours client en 3 versions, copiable en 1 clic.</li></ul><br><table style="width:100%;border-collapse:collapse;font-size:.7rem"><thead><tr><th style="padding:4px 8px;background:var(--surface2);border:1px solid var(--border);text-align:left">Type</th><th style="padding:4px 8px;background:var(--surface2);border:1px solid var(--border);text-align:left">Sous-type</th><th style="padding:4px 8px;background:var(--surface2);border:1px solid var(--border);text-align:left">Délai</th></tr></thead><tbody><tr><td style="padding:4px 8px;border:1px solid var(--border)">🔬 Histo</td><td style="padding:4px 8px;border:1px solid var(--border)">Classique</td><td style="padding:4px 8px;border:1px solid var(--border)">21j</td></tr><tr><td style="padding:4px 8px;border:1px solid var(--border)">🔬 Histo</td><td style="padding:4px 8px;border:1px solid var(--border)">VIP / Urgent</td><td style="padding:4px 8px;border:1px solid var(--border)">15j</td></tr><tr><td style="padding:4px 8px;border:1px solid var(--border)">🔬 Histo</td><td style="padding:4px 8px;border:1px solid var(--border)">Grosse pièce</td><td style="padding:4px 8px;border:1px solid var(--border)">23j</td></tr><tr><td style="padding:4px 8px;border:1px solid var(--border)">🧫 Cyto</td><td style="padding:4px 8px;border:1px solid var(--border)">Urgence</td><td style="padding:4px 8px;border:1px solid var(--border)">2j</td></tr><tr><td style="padding:4px 8px;border:1px solid var(--border)">🧫 Cyto</td><td style="padding:4px 8px;border:1px solid var(--border)">Liquide classique</td><td style="padding:4px 8px;border:1px solid var(--border)">3j</td></tr><tr><td style="padding:4px 8px;border:1px solid var(--border)">🧫 Cyto</td><td style="padding:4px 8px;border:1px solid var(--border)">Lame classique</td><td style="padding:4px 8px;border:1px solid var(--border)">5j</td></tr><tr><td style="padding:4px 8px;border:1px solid var(--border)">🦠 Bact</td><td style="padding:4px 8px;border:1px solid var(--border)">Classique</td><td style="padding:4px 8px;border:1px solid var(--border)">8j</td></tr></tbody></table>` },
+  { cat: '📖 Utiliser l\'outil', q: '📌 ACTUS — À quoi ça sert ?', a: `<ul><li>Consultez en <strong>début de journée</strong> — infos clés sur pannes, consignes, indisponibilités.</li><li>📋 Copier le discours client pour répondre rapidement et de façon cohérente.</li><li>Le badge rouge sur l'onglet indique le nombre d'actus en cours.</li></ul>` },
+  { cat: '📖 Utiliser l\'outil', q: '🔒 Mes données sont-elles confidentielles ?', a: `<ul><li>Données stockées <strong>localement dans votre navigateur</strong> — pas visibles par vos collègues.</li><li>Synchronisation automatique vers le Google Sheet de votre responsable à chaque action.</li><li>Évitez de vider le cache Chrome pour ne pas perdre votre historique local.</li></ul>` },
+  { cat: '❓ Questions fréquentes', q: 'J\'ai saisi une raison de contact par erreur', a: `Allez dans <strong>🗂 Historique</strong>, retrouvez la ligne et cliquez <strong>✕</strong>. Supprimé de l'outil ET du Google Sheet.<div class="guide-tip">💡 Utilisez la recherche ou le filtre pour retrouver la ligne rapidement.</div>` },
+  { cat: '❓ Questions fréquentes', q: 'J\'ai oublié de sélectionner Tél ou Email avant de cliquer', a: `Rien ne s'enregistre — un avertissement s'affiche. Sélectionnez d'abord le canal, puis vos catégories.` },
+  { cat: '❓ Questions fréquentes', q: 'Je veux annuler ma sélection de catégories', a: `Cliquez <strong>Annuler</strong> dans la barre noire en bas — toutes les sélections sont effacées.` },
+  { cat: '❓ Questions fréquentes', q: 'Mes données sont-elles encore là le lendemain ?', a: `Oui, sauvegardées dans votre navigateur. Évitez de vider le cache Chrome ou d'utiliser la navigation privée pour le travail quotidien.` },
+  { cat: '❓ Questions fréquentes', q: 'J\'ai ajouté un dossier dans Délais par erreur', a: `Dans <strong>⏱ Délais</strong>, cliquez <strong>✕</strong> à droite du dossier. Supprimé de l'outil et du Google Sheet.` },
+  { cat: '❓ Questions fréquentes', q: 'Le lien ne fonctionne plus ou la page est blanche', a: `<ol style="padding-left:1.1rem;line-height:1.8"><li>Faites <strong>Cmd+Shift+R</strong> pour forcer le rechargement.</li><li>Essayez en fenêtre privée.</li><li>Vérifiez votre connexion internet.</li><li>Contactez votre responsable.</li></ol>` },
+  { cat: '❓ Questions fréquentes', q: 'Pourquoi plusieurs lignes avec le même ID appel dans le Sheet ?', a: `Normal — si vous avez sélectionné 3 catégories pour un appel, chacune génère une ligne. L'<strong>ID appel</strong> identique permet de les regrouper.` },
+  { cat: '❓ Questions fréquentes', q: 'Je change d\'ordinateur — je perds mes données ?', a: `L'historique local sera perdu. Mais toutes vos données sont dans le Google Sheet. Exportez régulièrement via <strong>↓ Excel</strong>.` },
+];
+
+function renderFaq() {
+  const el = document.getElementById('fullFaqList') || document.getElementById('faqList');
+  if (!el) return;
+  const cats = [...new Set(FAQS.map(f => f.cat))];
+  let html = '';
+  cats.forEach(cat => {
+    html += `<div style="font-size:.62rem;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;font-family:'DM Mono',monospace;margin:1.25rem 0 .6rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)">${cat}</div>`;
+    FAQS.filter(f => f.cat === cat).forEach((f, j) => {
+      const id = 'faq-' + j + cat.length;
+      html += `<div class="faq-item"><button class="faq-q" onclick="toggleFaqId('${id}',this)"><span>${f.q}</span><span class="arrow">▼</span></button><div class="faq-a" id="${id}">${f.a}</div></div>`;
+    });
+  });
+  el.innerHTML = html;
+}
+
+function toggleFaqId(id, btn) {
+  const ans = document.getElementById(id);
+  const isOpen = ans.classList.contains('visible');
+  document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('visible'));
+  document.querySelectorAll('.faq-q').forEach(b => b.classList.remove('open'));
+  if (!isOpen) { ans.classList.add('visible'); btn.classList.add('open'); }
+}
+
+function toggleFaq(i, btn) { toggleFaqId('faq-' + i, btn); }
 
 function showPage(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -728,6 +661,7 @@ function showPage(id, btn) {
   if (id === 'stats') renderStats();
   if (id === 'historique') renderHist();
   if (id === 'delais') renderDossiers();
+  if (id === 'guide') renderFaq();
 }
 
 function selectCanal(c, btn) {
