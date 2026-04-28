@@ -70,6 +70,7 @@ nav{background:var(--surface);border-bottom:1.5px solid var(--border);display:fl
 .cat-btn .label-text{font-size:.76rem}
 .cat-btn:hover{border-color:var(--border2);background:var(--surface2)}
 .cat-btn:active{transform:scale(.98)}
+.cat-btn.selected { border-color:var(--blue);background:var(--blue-bg);color:var(--blue); }
 .cat-btn.flash{border-color:var(--text)!important;background:var(--text)!important;color:#FAFAF8!important}
 .ripple{position:absolute;border-radius:50%;background:rgba(0,0,0,.06);transform:scale(0);animation:rip .4s ease-out forwards;pointer-events:none}
 @keyframes rip{to{transform:scale(4);opacity:0}}
@@ -255,40 +256,54 @@ td.primary{color:var(--text)}
     <!-- ASV -->
     <div class="col-card">
       <div class="col-header asv">🩺 ASV</div>
-      <button class="cat-btn" onclick="logAppel('Suivi de résultats',this)"><span class="emoji">🔬</span><span class="label-text">Suivi de résultats</span></button>
-      <button class="cat-btn" onclick="logAppel('Retard de résultats',this)"><span class="emoji">🕐</span><span class="label-text">Retard de résultats</span></button>
-      <button class="cat-btn" onclick="logAppel('Pré-analytique',this)"><span class="emoji">🧫</span><span class="label-text">Pré-analytique</span></button>
-      <button class="cat-btn" onclick="logAppel('Demande d\'ajout',this)"><span class="emoji">➕</span><span class="label-text">Demande d'ajout</span></button>
-      <button class="cat-btn" onclick="logAppel('Annulation',this)"><span class="emoji">❌</span><span class="label-text">Annulation</span></button>
-      <button class="cat-btn" onclick="logAppel('Info délais d\'analyse',this)"><span class="emoji">📅</span><span class="label-text">Info délais d'analyse</span></button>
-      <button class="cat-btn" onclick="logAppel('Suivi ATEL',this)"><span class="emoji">📋</span><span class="label-text">Suivi ATEL</span></button>
-      <button class="cat-btn" onclick="logAppel('Demande de tarif',this)"><span class="emoji">💰</span><span class="label-text">Demande de tarif</span></button>
-      <button class="cat-btn" onclick="logAppel('Avis / question vétérinaire',this)"><span class="emoji">🐾</span><span class="label-text">Avis / question vétérinaire</span></button>
+    <!-- ASV -->
+    <div class="col-card">
+      <div class="col-header asv">🩺 ASV</div>
+      <button class="cat-btn" onclick="toggleCat('Suivi de résultats',this)"><span class="emoji">🔬</span><span class="label-text">Suivi de résultats</span></button>
+      <button class="cat-btn" onclick="toggleCat('Retard de résultats',this)"><span class="emoji">🕐</span><span class="label-text">Retard de résultats</span></button>
+      <button class="cat-btn" onclick="toggleCat('Pré-analytique',this)"><span class="emoji">🧫</span><span class="label-text">Pré-analytique</span></button>
+      <button class="cat-btn" onclick="toggleCat('Demande d\'ajout',this)"><span class="emoji">➕</span><span class="label-text">Demande d'ajout</span></button>
+      <button class="cat-btn" onclick="toggleCat('Annulation',this)"><span class="emoji">❌</span><span class="label-text">Annulation</span></button>
+      <button class="cat-btn" onclick="toggleCat('Info délais d\'analyse',this)"><span class="emoji">📅</span><span class="label-text">Info délais d'analyse</span></button>
+      <button class="cat-btn" onclick="toggleCat('Suivi ATEL',this)"><span class="emoji">📋</span><span class="label-text">Suivi ATEL</span></button>
+      <button class="cat-btn" onclick="toggleCat('Demande de tarif',this)"><span class="emoji">💰</span><span class="label-text">Demande de tarif</span></button>
+      <button class="cat-btn" onclick="toggleCat('Avis / question vétérinaire',this)"><span class="emoji">🐾</span><span class="label-text">Avis / question vétérinaire</span></button>
       <button class="cat-btn" onclick="logAppelAutre('ASV',this)"><span class="emoji">✏️</span><span class="label-text">Autre</span></button>
     </div>
 
     <!-- LOGISTIQUE -->
     <div class="col-card">
       <div class="col-header logistique">🚚 Logistique</div>
-      <button class="cat-btn" onclick="logAppel('Gestion et suivi commande matériel',this)"><span class="emoji">📦</span><span class="label-text">Gestion et suivi commande matériel</span></button>
-      <button class="cat-btn" onclick="logAppel('Litige logistique',this)"><span class="emoji">⚠️</span><span class="label-text">Litige logistique</span></button>
-      <button class="cat-btn" onclick="logAppel('Organisation envoi prélèvement',this)"><span class="emoji">🧪</span><span class="label-text">Organisation envoi prélèvement</span></button>
-      <button class="cat-btn" onclick="logAppelAutre('Logistique',this)"><span class="emoji">✏️</span><span class="label-text">Autre</span></button>
+      <button class="cat-btn" onclick="toggleCat('Gestion et suivi commande matériel',this)"><span class="emoji">📦</span><span class="label-text">Gestion et suivi commande matériel</span></button>
+      <button class="cat-btn" onclick="toggleCat('Litige logistique',this)"><span class="emoji">⚠️</span><span class="label-text">Litige logistique</span></button>
+      <button class="cat-btn" onclick="toggleCat('Organisation envoi prélèvement',this)"><span class="emoji">🚛</span><span class="label-text">Organisation envoi prélèvement</span></button>
+      <button class="cat-btn" onclick="toggleCat('Activation / réactivation point de collecte',this)"><span class="emoji">🔑</span><span class="label-text">Activation / réactivation point de collecte</span></button>
+      <button class="cat-btn" onclick="toggleCat('Confirmation prélèvement reçu',this)"><span class="emoji">✅</span><span class="label-text">Confirmation prélèvement reçu</span></button>
+      <button class="cat-btn" onclick="toggleCat('Modification des informations client',this)"><span class="emoji">✏️</span><span class="label-text">Modification des informations client</span></button>
+      <button class="cat-btn" onclick="logAppelAutre('Logistique',this)"><span class="emoji">➕</span><span class="label-text">Autre</span></button>
     </div>
 
     <!-- COMPTABILITÉ -->
     <div class="col-card">
       <div class="col-header" style="background:#F3EEFA;color:#4A2A9A">💶 Comptabilité</div>
-      <button class="cat-btn" onclick="logAppel('Demande de facture',this)"><span class="emoji">🧾</span><span class="label-text">Demande de facture</span></button>
-      <button class="cat-btn" onclick="logAppel('Explication facturation',this)"><span class="emoji">❓</span><span class="label-text">Explication facturation</span></button>
-      <button class="cat-btn" onclick="logAppel('Facture réglée mais relancée',this)"><span class="emoji">⚠️</span><span class="label-text">Facture réglée mais relancée</span></button>
+      <button class="cat-btn" onclick="toggleCat('Demande de facture',this)"><span class="emoji">🧾</span><span class="label-text">Demande de facture</span></button>
+      <button class="cat-btn" onclick="toggleCat('Explication facturation',this)"><span class="emoji">❓</span><span class="label-text">Explication facturation</span></button>
+      <button class="cat-btn" onclick="toggleCat('Facture réglée mais relancée',this)"><span class="emoji">⚠️</span><span class="label-text">Facture réglée mais relancée</span></button>
       <button class="cat-btn" onclick="logAppelAutre('Comptabilité',this)"><span class="emoji">✏️</span><span class="label-text">Autre</span></button>
     </div>
 
   </div>
-</div>
 
-<!-- ══ STATS ══ -->
+  <!-- BARRE VALIDER -->
+  <div id="validBar" style="display:none;margin-top:1rem;background:var(--text);border-radius:var(--r);padding:.85rem 1.25rem;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+    <div style="font-size:.78rem;color:#FAFAF8" id="validLabel">0 catégorie sélectionnée</div>
+    <div style="display:flex;gap:.5rem">
+      <button onclick="resetSelection()" style="padding:5px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.7);font-size:.72rem;cursor:pointer;font-family:'DM Mono',monospace">Annuler</button>
+      <button onclick="validerContact()" style="padding:5px 14px;border-radius:999px;border:none;background:#FAFAF8;color:var(--text);font-size:.72rem;cursor:pointer;font-family:'DM Mono',monospace;font-weight:500">✓ Valider le contact</button>
+    </div>
+  </div>
+
+</div>
 <div class="page" id="page-stats">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem">
     <div class="period-tabs">
@@ -503,11 +518,12 @@ Si vous avez planifié des prélèvements le vendredi 22 mai en fin de journée 
           <p>C'est l'onglet principal — celui que vous utilisez à chaque appel ou email reçu.</p>
           <ul>
             <li>Commencez par sélectionner le <strong>canal</strong> : 📞 Téléphone ou ✉️ Email. <em>Sans ce choix, aucun bouton ne fonctionne.</em></li>
-            <li>Cliquez ensuite sur la <strong>catégorie</strong> qui correspond à la demande du client. Un flash visuel confirme l'enregistrement.</li>
-            <li>Le contact est automatiquement horodaté et sauvegardé.</li>
-            <li>Si aucune catégorie ne correspond exactement, utilisez le bouton <strong>Autre</strong> en bas de chaque colonne.</li>
+            <li>Cliquez ensuite sur <strong>une ou plusieurs catégories</strong> qui correspondent à la demande du client — elles se surlignent en bleu.</li>
+            <li>Une barre noire apparaît en bas avec le résumé de vos sélections. Cliquez <strong>✓ Valider le contact</strong> pour tout enregistrer en une fois.</li>
+            <li>Un seul appel avec 3 sujets = 3 catégories sélectionnées + 1 clic Valider. Chaque catégorie sera comptée individuellement dans vos stats.</li>
+            <li>Si aucune catégorie ne correspond exactement, utilisez le bouton <strong>Autre</strong> en bas de chaque colonne — il s'enregistre directement sans validation.</li>
           </ul>
-          <div class="guide-tip">💡 Astuce : vous pouvez changer de canal entre deux appels sans recharger la page.</div>
+          <div class="guide-tip">💡 Astuce : vous pouvez changer de canal entre deux appels, la sélection en cours sera réinitialisée automatiquement.</div>
         </div>
       </div>
     </div>
@@ -694,6 +710,61 @@ function selectCanal(c, btn) {
   canal = c;
   document.querySelectorAll('.canal-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  resetSelection();
+}
+
+// ─── SAISIE MULTI-CATÉGORIES ──────────────────────────────────────
+let selectedCats = [];
+
+function toggleCat(cat, btn) {
+  if (!canal) { showToast('⚠️ Sélectionnez Tél ou Email d\'abord'); return; }
+  const idx = selectedCats.indexOf(cat);
+  if (idx === -1) {
+    selectedCats.push(cat);
+    btn.classList.add('selected');
+  } else {
+    selectedCats.splice(idx, 1);
+    btn.classList.remove('selected');
+  }
+  updateValidBar();
+}
+
+function updateValidBar() {
+  const bar = document.getElementById('validBar');
+  const label = document.getElementById('validLabel');
+  if (selectedCats.length === 0) {
+    bar.style.display = 'none';
+  } else {
+    bar.style.display = 'flex';
+    label.textContent = selectedCats.length + ' catégorie' + (selectedCats.length > 1 ? 's' : '') + ' : ' + selectedCats.join(', ');
+  }
+}
+
+function resetSelection() {
+  selectedCats = [];
+  document.querySelectorAll('.cat-btn.selected').forEach(b => b.classList.remove('selected'));
+  updateValidBar();
+}
+
+function validerContact() {
+  if (!canal || selectedCats.length === 0) return;
+  const now = new Date();
+  // Enregistre 1 entrée par catégorie mais avec le même timestamp
+  const dt = now.toISOString();
+  selectedCats.forEach(cat => {
+    appels.unshift({ id: Date.now() + Math.random(), dt, canal, cat });
+    sendToSheet({
+      date: now.toLocaleDateString('fr-FR'),
+      heure: now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
+      agent,
+      canal: canal === 'telephone' ? 'Téléphone' : 'Email',
+      categorie: cat,
+      dossier: '', type: '', statut: ''
+    });
+  });
+  save();
+  showToast('✓ ' + selectedCats.length + ' catégorie' + (selectedCats.length > 1 ? 's' : '') + ' enregistrée' + (selectedCats.length > 1 ? 's' : ''));
+  resetSelection();
 }
 
 function logAppelAutre(col, btn) {
