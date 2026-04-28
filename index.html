@@ -237,7 +237,7 @@ td.primary{color:var(--text)}
     <button class="nav-tab" onclick="showPage('delais',this)">⏱ DÉLAIS</button>
     <button class="nav-tab" onclick="showPage('stats',this)">📊 STATS</button>
     <button class="nav-tab" onclick="showPage('historique',this)">🗂 HISTORIQUE</button>
-    <button class="nav-tab" onclick="showPage('actus',this)">📌 ACTUS</button>
+    <button class="nav-tab" onclick="showPage('actus',this)">📌 ACTUS <span id="actuCount" style="background:var(--red);color:#fff;font-size:.58rem;padding:1px 6px;border-radius:999px;margin-left:3px;vertical-align:middle">4</span></button>
     <button class="nav-tab" onclick="showPage('guide',this)">❓ GUIDE</button>
   </div>
   <div class="nav-date" id="navDate"></div>
@@ -253,9 +253,6 @@ td.primary{color:var(--text)}
   <div class="section-label" style="margin-bottom:.85rem">Catégorie de la demande</div>
   <div class="saisie-cols">
 
-    <!-- ASV -->
-    <div class="col-card">
-      <div class="col-header asv">🩺 ASV</div>
     <!-- ASV -->
     <div class="col-card">
       <div class="col-header asv">🩺 ASV</div>
@@ -279,8 +276,8 @@ td.primary{color:var(--text)}
       <button class="cat-btn" onclick="toggleCat('Organisation envoi prélèvement',this)"><span class="emoji">🚛</span><span class="label-text">Organisation envoi prélèvement</span></button>
       <button class="cat-btn" onclick="toggleCat('Activation / réactivation point de collecte',this)"><span class="emoji">🔑</span><span class="label-text">Activation / réactivation point de collecte</span></button>
       <button class="cat-btn" onclick="toggleCat('Confirmation prélèvement reçu',this)"><span class="emoji">✅</span><span class="label-text">Confirmation prélèvement reçu</span></button>
-      <button class="cat-btn" onclick="toggleCat('Modification des informations client',this)"><span class="emoji">✏️</span><span class="label-text">Modification des informations client</span></button>
-      <button class="cat-btn" onclick="logAppelAutre('Logistique',this)"><span class="emoji">➕</span><span class="label-text">Autre</span></button>
+      <button class="cat-btn" onclick="toggleCat('Modification des informations client',this)"><span class="emoji">👥</span><span class="label-text">Modification des informations client</span></button>
+      <button class="cat-btn" onclick="logAppelAutre('Logistique',this)"><span class="emoji">✏️</span><span class="label-text">Autre</span></button>
     </div>
 
     <!-- COMPTABILITÉ -->
@@ -374,7 +371,7 @@ td.primary{color:var(--text)}
   </div>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>DATE & HEURE</th><th>CANAL</th><th>CATÉGORIE</th><th></th></tr></thead>
+      <thead><tr><th>DATE & HEURE</th><th>CANAL</th><th>CATÉGORIE</th><th>ID APPEL</th><th></th></tr></thead>
       <tbody id="histBody"></tbody>
     </table>
   </div>
@@ -746,19 +743,24 @@ function resetSelection() {
   updateValidBar();
 }
 
+function genCallId() {
+  return 'CALL-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+}
+
 function validerContact() {
   if (!canal || selectedCats.length === 0) return;
   const now = new Date();
-  // Enregistre 1 entrée par catégorie mais avec le même timestamp
   const dt = now.toISOString();
+  const callId = genCallId();
   selectedCats.forEach(cat => {
-    appels.unshift({ id: Date.now() + Math.random(), dt, canal, cat });
+    appels.unshift({ id: Date.now() + Math.random(), dt, canal, cat, callId });
     sendToSheet({
       date: now.toLocaleDateString('fr-FR'),
       heure: now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}),
       agent,
       canal: canal === 'telephone' ? 'Téléphone' : 'Email',
       categorie: cat,
+      callid: callId,
       dossier: '', type: '', statut: ''
     });
   });
@@ -770,16 +772,17 @@ function validerContact() {
 function logAppelAutre(col, btn) {
   if (!canal) { showToast('⚠️ Sélectionnez Tél ou Email d\'abord'); return; }
   const cat = col + ' - Autre';
+  const callId = genCallId();
   const r = document.createElement('span'); r.className = 'ripple';
   const rect = btn.getBoundingClientRect();
   const size = Math.max(rect.width, rect.height);
   r.style.cssText = `width:${size}px;height:${size}px;top:0px;left:0px`;
   btn.appendChild(r); setTimeout(() => r.remove(), 450);
   btn.classList.add('flash'); setTimeout(() => btn.classList.remove('flash'), 380);
-  appels.unshift({ id: Date.now(), dt: new Date().toISOString(), canal, cat });
+  appels.unshift({ id: Date.now(), dt: new Date().toISOString(), canal, cat, callId });
   save(); showToast('✓ ' + cat);
   const now = new Date();
-  sendToSheet({ date: now.toLocaleDateString('fr-FR'), heure: now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}), agent, canal: canal==='telephone'?'Téléphone':'Email', categorie: cat, dossier:'', type:'', statut:'' });
+  sendToSheet({ date: now.toLocaleDateString('fr-FR'), heure: now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}), agent, canal: canal==='telephone'?'Téléphone':'Email', categorie: cat, callid: callId, dossier:'', type:'', statut:'' });
 }
 
 function logAppel(cat, btn) {
@@ -953,11 +956,17 @@ function renderHist(){
     const dt=new Date(a.dt);
     const dtStr=dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'2-digit'})+' '+dt.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
     const cb=a.canal==='telephone'?'<span class="badge badge-tel">📞 Tél</span>':'<span class="badge badge-mail">✉️ Email</span>';
-    return `<tr><td style="font-size:.68rem;white-space:nowrap">${dtStr}</td><td>${cb}</td><td class="primary">${a.cat}</td><td><button class="del-btn" onclick="delAppel(${a.id})">✕</button></td></tr>`;
+    return `<tr><td style="font-size:.68rem;white-space:nowrap">${dtStr}</td><td>${cb}</td><td class="primary">${a.cat}</td><td style="font-size:.62rem;color:var(--text3);font-family:'DM Mono',monospace">${a.callId||a.callid||'—'}</td><td><button class="del-btn" onclick="delAppel(${a.id})">✕</button></td></tr>`;
   }).join('');
 }
 
-function delAppel(id){appels=appels.filter(a=>a.id!==id);save();renderHist();}
+function delAppel(id){
+  const a = appels.find(a => a.id === id);
+  if (a) deleteFromSheet(a.callId || a.callid || '', agent, a.cat);
+  appels = appels.filter(a => a.id !== id);
+  save(); renderHist();
+  showToast('✓ Supprimé');
+}
 
 function exportHist(){
   if(!appels.length){showToast('Aucun contact');return;}
@@ -1136,10 +1145,16 @@ function exportDossiers(){
 }
 
 // ─── GOOGLE SHEETS SYNC ───────────────────────────────────────────
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwapgdRivIuQ0_H-k4kz6oMGx-7HaS-1e_E8IAOz7J3Xj0eDewuOenUv2U1O6PRCK85/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzmMczcRBCFj4LeWRooNA6CfUgf799N2W27JsfwrOD0zuewpAA1dkXznNwvErcVPH7C/exec';
 
 function sendToSheet(data) {
   const params = new URLSearchParams(data).toString();
+  const img = new Image();
+  img.src = SHEET_URL + '?' + params;
+}
+
+function deleteFromSheet(callid, agent, categorie) {
+  const params = new URLSearchParams({ action: 'delete', callid, agent, categorie }).toString();
   const img = new Image();
   img.src = SHEET_URL + '?' + params;
 }
