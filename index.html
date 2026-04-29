@@ -1163,9 +1163,14 @@ function getCatColor(cat) {
 function renderStats() {
   const cutoff = getPeriodStart(statsPeriod);
   const f = appels.filter(a => new Date(a.dt) >= cutoff);
-  const total = f.length;
-  const tels = f.filter(a => a.canal === 'telephone').length;
-  const mails = f.filter(a => a.canal === 'email').length;
+
+  // Compter les contacts uniques (par callId) pas les lignes
+  const uniqueIds = new Set(f.map(a => a.callId || a.id));
+  const total = uniqueIds.size;
+  const telsIds = new Set(f.filter(a => a.canal === 'telephone').map(a => a.callId || a.id));
+  const mailsIds = new Set(f.filter(a => a.canal === 'email').map(a => a.callId || a.id));
+  const tels = telsIds.size;
+  const mails = mailsIds.size;
   const todayStart = new Date(); todayStart.setHours(0,0,0,0);
   const today = appels.filter(a => new Date(a.dt) >= todayStart).length;
 
