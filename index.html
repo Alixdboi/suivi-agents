@@ -870,8 +870,29 @@ function renderAnalyseCard(a, i) {
       <table class="analyse-table" style="width:100%;border-collapse:collapse;font-size:.77rem">
         ${rows}
       </table>
+      <div style="margin-top:.75rem;padding-top:.6rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end">
+        <button onclick="signalerErreur('${a.nom.replace(/'/g, "\\'")} (${a.code})', this)" style="font-size:.68rem;color:var(--text3);background:none;border:1px solid var(--border);border-radius:999px;padding:3px 10px;cursor:pointer;font-family:'DM Mono',monospace">⚑ Signaler une erreur</button>
+      </div>
     </div>
   </div>`;
+}
+
+function signalerErreur(analyse, btn) {
+  const now = new Date();
+  const params = new URLSearchParams({
+    action: 'signalement',
+    agent,
+    analyse,
+    date: now.toLocaleDateString('fr-FR'),
+    heure: now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})
+  }).toString();
+  const img = new Image();
+  img.src = SHEET_URL + '?' + params;
+  btn.textContent = '✓ Signalé !';
+  btn.style.color = 'var(--green)';
+  btn.style.borderColor = 'var(--green)';
+  btn.disabled = true;
+  showToast('✓ Signalement envoyé à la responsable');
 }
 
 function renderDetailItem(label, val) {
@@ -1096,7 +1117,12 @@ function validerContact() {
   });
   save();
   showToast('✓ ' + selectedCats.length + ' catégorie' + (selectedCats.length > 1 ? 's' : '') + ' enregistrée' + (selectedCats.length > 1 ? 's' : ''));
-  resetSelection();
+  selectedCats = [];
+  document.querySelectorAll('.cat-btn').forEach(b => {
+    b.classList.remove('selected');
+    b.classList.remove('flash');
+  });
+  updateValidBar();
 }
 
 function logAppelAutre(col, btn) {
@@ -1476,7 +1502,7 @@ function exportDossiers(){
 }
 
 // ─── GOOGLE SHEETS SYNC ───────────────────────────────────────────
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbx8bc711tbRGcmoXDUGEc2yEWHw1HRnSM5xwMhOf7pgMuZt_yqc17YqFQ_vvLEYZMsK/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxxnpISoQXiA2jxrCMGviWws9ZbEmJM8DdYJPM7VKeICgoFCrOsdUmQgkwgX_l5oxU3/exec';
 
 function sendToSheet(data) {
   const params = new URLSearchParams(data).toString();
