@@ -967,8 +967,8 @@ function renderAnalyseCard(a, i) {
       <table class="analyse-table" style="width:100%;border-collapse:collapse;font-size:.77rem">
         ${rows}
       </table>
-      <div style="margin-top:.75rem;padding-top:.6rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end">
-        <button onclick="signalerErreur('${a.nom.replace(/'/g, "\\'")} (${a.code})', this)" style="font-size:.68rem;color:var(--text3);background:none;border:1px solid var(--border);border-radius:999px;padding:3px 10px;cursor:pointer;font-family:'DM Mono',monospace">⚑ Signaler une erreur</button>
+      <div style="margin-top:.75rem;padding-top:.6rem;border-top:1px solid var(--border);display:flex;justify-content:flex-start">
+        <button onclick="signalerErreur('${a.nom.replace(/'/g, "\\'")} (${a.code})', this)" style="font-size:.68rem;color:#C0392B;background:#FDF0EE;border:1px solid #f0b8b2;border-radius:999px;padding:3px 10px;cursor:pointer;font-family:'DM Mono',monospace">⚑ Signaler une erreur</button>
       </div>
     </div>
   </div>`;
@@ -1778,7 +1778,7 @@ function exportDossiers(){
 }
 
 // ─── GOOGLE SHEETS SYNC ───────────────────────────────────────────
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxxnpISoQXiA2jxrCMGviWws9ZbEmJM8DdYJPM7VKeICgoFCrOsdUmQgkwgX_l5oxU3/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbye4AcXsek9P93dnTPBreTCzLGU5ABZpOTvyukSQJYf5gbp0GnQfYmA7gYE_kkoJiRp/exec';
 
 function sendToSheet(data) {
   const params = new URLSearchParams(data).toString();
