@@ -78,11 +78,9 @@ nav{background:var(--surface);border-bottom:1.5px solid var(--border);display:fl
 /* Tooltip info */
 .cat-btn .info-i{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--surface2);color:var(--text3);font-size:.6rem;font-style:italic;font-weight:600;margin-left:auto;flex-shrink:0;border:1px solid var(--border2);cursor:default;position:relative}
 .cat-btn:hover .info-i, .cat-btn.selected .info-i{background:rgba(255,255,255,.25);color:inherit;border-color:currentColor}
-.cat-btn .info-i::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 7px);right:-8px;background:var(--text);color:#FAFAF8;font-size:.66rem;font-style:normal;padding:.45rem .65rem;border-radius:8px;width:210px;white-space:normal;line-height:1.45;opacity:0;pointer-events:none;transition:opacity .15s;z-index:500;box-shadow:0 4px 12px rgba(0,0,0,.18)}
-.cat-btn .info-i:hover::after{opacity:1}
-/* Arrow under tooltip */
-.cat-btn .info-i::before{content:'';position:absolute;bottom:calc(100% + 1px);right:3px;border:5px solid transparent;border-top-color:var(--text);opacity:0;pointer-events:none;transition:opacity .15s;z-index:501}
-.cat-btn .info-i:hover::before{opacity:1}
+.cat-btn .info-i::after{display:none}
+.cat-btn .info-i::before{display:none}
+#tooltip-box{position:fixed;background:#1A1916;color:#FAFAF8;font-size:.72rem;font-family:'DM Mono',monospace;padding:.55rem .8rem;border-radius:9px;width:240px;white-space:normal;line-height:1.5;z-index:99999;box-shadow:0 6px 20px rgba(0,0,0,.3);pointer-events:none;opacity:0;transition:opacity .12s;max-width:260px}
 
 /* Sub-group labels inside col-card */
 .cat-subgroup{font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;padding:.45rem .8rem;margin-top:.7rem;margin-bottom:.2rem;border-radius:7px;font-family:'DM Mono',monospace;font-weight:600;display:flex;align-items:center;gap:.4rem}
@@ -1844,6 +1842,38 @@ function showToast(msg){
   t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2000);
 }
+</script>
+<div id="tooltip-box"></div>
+<script>
+const _tt = document.getElementById('tooltip-box');
+let _ttTimer;
+document.addEventListener('mouseover', e => {
+  const el = e.target.closest('.info-i');
+  if (!el) return;
+  const tip = el.getAttribute('data-tip');
+  if (!tip) return;
+  clearTimeout(_ttTimer);
+  _tt.textContent = tip;
+  _tt.style.opacity = '0';
+  _tt.style.display = 'block';
+  const r = el.getBoundingClientRect();
+  const tw = 250;
+  const th = _tt.offsetHeight || 70;
+  let left = r.left + r.width / 2 - tw / 2;
+  let top = r.bottom + 8;
+  if (top + th > window.innerHeight - 10) top = r.top - th - 8;
+  if (left < 8) left = 8;
+  if (left + tw > window.innerWidth - 8) left = window.innerWidth - tw - 8;
+  _tt.style.left = left + 'px';
+  _tt.style.top = top + 'px';
+  _tt.style.width = tw + 'px';
+  _tt.style.opacity = '1';
+});
+document.addEventListener('mouseout', e => {
+  const el = e.target.closest('.info-i');
+  if (!el) return;
+  _tt.style.opacity = '0';
+});
 </script>
 </body>
 </html>
