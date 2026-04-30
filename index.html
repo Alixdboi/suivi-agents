@@ -41,6 +41,9 @@ nav{background:var(--surface);border-bottom:1.5px solid var(--border);display:fl
 .nav-tab{padding:.8rem 1rem;color:var(--text3);font-size:.68rem;letter-spacing:.05em;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
 .nav-tab:hover{color:var(--text2)}
 .nav-tab.active{color:var(--text);border-bottom-color:var(--text)}
+.nav-tab.primary{background:var(--accent);color:#fff;border-bottom:2px solid transparent;border-radius:0}
+.nav-tab.primary:hover{background:#1e4a7a;color:#fff}
+.nav-tab.primary.active{background:var(--text);color:#fff;border-bottom-color:transparent}
 .nav-date{margin-left:auto;padding:.8rem 1.25rem;color:var(--text3);font-size:.65rem;display:flex;align-items:center;border-left:1px solid var(--border);white-space:nowrap}
 
 /* PAGES */
@@ -71,6 +74,21 @@ nav{background:var(--surface);border-bottom:1.5px solid var(--border);display:fl
 .cat-btn:hover{border-color:var(--border2);background:var(--surface2)}
 .cat-btn:active{transform:scale(.98)}
 .cat-btn.selected { border-color:var(--blue);background:var(--blue-bg);color:var(--blue); }
+
+/* Tooltip info */
+.cat-btn .info-i{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--surface2);color:var(--text3);font-size:.6rem;font-style:italic;font-weight:600;margin-left:auto;flex-shrink:0;border:1px solid var(--border2);cursor:default;position:relative}
+.cat-btn:hover .info-i, .cat-btn.selected .info-i{background:rgba(255,255,255,.25);color:inherit;border-color:currentColor}
+.cat-btn .info-i::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 7px);right:-8px;background:var(--text);color:#FAFAF8;font-size:.66rem;font-style:normal;padding:.45rem .65rem;border-radius:8px;width:210px;white-space:normal;line-height:1.45;opacity:0;pointer-events:none;transition:opacity .15s;z-index:500;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.cat-btn .info-i:hover::after{opacity:1}
+/* Arrow under tooltip */
+.cat-btn .info-i::before{content:'';position:absolute;bottom:calc(100% + 1px);right:3px;border:5px solid transparent;border-top-color:var(--text);opacity:0;pointer-events:none;transition:opacity .15s;z-index:501}
+.cat-btn .info-i:hover::before{opacity:1}
+
+/* Sub-group labels inside col-card */
+.cat-subgroup{font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;padding:.45rem .8rem;margin-top:.7rem;margin-bottom:.2rem;border-radius:7px;font-family:'DM Mono',monospace;font-weight:600;display:flex;align-items:center;gap:.4rem}
+.cat-subgroup.sub-resultats{background:#DBEAFE;color:#1E40AF}
+.cat-subgroup.sub-prelevement{background:#D1FAE5;color:#065F46}
+.cat-subgroup.sub-informations{background:#FEF3C7;color:#92400E}
 .cat-btn.flash{border-color:var(--text)!important;background:var(--text)!important;color:#FAFAF8!important}
 .ripple{position:absolute;border-radius:50%;background:rgba(0,0,0,.06);transform:scale(0);animation:rip .4s ease-out forwards;pointer-events:none}
 @keyframes rip{to{transform:scale(4);opacity:0}}
@@ -260,11 +278,12 @@ td.primary{color:var(--text)}
 <nav id="mainNav" style="display:none">
   <div class="nav-agent"><span class="label">AGENT</span><span id="agentName"></span></div>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('saisie',this)">📞 DEMANDES TRAITÉES</button>
-    <button class="nav-tab" onclick="showPage('historique',this)">🗂 HISTORIQUE</button>
-    <button class="nav-tab" onclick="showPage('stats',this)">📊 STATS</button>
+    <button class="nav-tab primary active" onclick="showPage('saisie',this)">📞 DEMANDES TRAITÉES</button>
+    <button class="nav-tab primary" onclick="showPage('historique',this)">🗂 HISTORIQUE</button>
+    <button class="nav-tab primary" onclick="showPage('stats',this)">📊 STATS</button>
     <button class="nav-tab" onclick="showPage('analyses',this)">🔎 ANALYSES</button>
     <button class="nav-tab" onclick="showPage('delais',this)">⏱ DÉLAIS</button>
+    <button class="nav-tab" onclick="showPage('planning',this)">📅 AGENDA VÉTOBIO</button>
     <button class="nav-tab" onclick="showPage('actus',this)">📌 ACTUS <span id="actuCount" style="background:var(--red);color:#fff;font-size:.58rem;padding:1px 6px;border-radius:999px;margin-left:3px;vertical-align:middle">4</span></button>
     <button class="nav-tab" onclick="showPage('guide',this)">❓ GUIDE</button>
   </div>
@@ -310,36 +329,109 @@ td.primary{color:var(--text)}
     <!-- ASV -->
     <div class="col-card">
       <div class="col-header asv">🩺 ASV</div>
-      <button class="cat-btn" onclick="toggleCat('Suivi de résultats',this)"><span class="emoji">🔬</span><span class="label-text">Suivi de résultats</span></button>
-      <button class="cat-btn" onclick="toggleCat('Retard de résultats',this)"><span class="emoji">🕐</span><span class="label-text">Retard de résultats</span></button>
-      <button class="cat-btn" onclick="toggleCat('Pré-analytique',this)"><span class="emoji">🧫</span><span class="label-text">Pré-analytique</span></button>
-      <button class="cat-btn" onclick="toggleCat('Demande d\'ajout',this)"><span class="emoji">➕</span><span class="label-text">Demande d'ajout</span></button>
-      <button class="cat-btn" onclick="toggleCat('Annulation',this)"><span class="emoji">❌</span><span class="label-text">Annulation</span></button>
-      <button class="cat-btn" onclick="toggleCat('Info délais d\'analyse',this)"><span class="emoji">📅</span><span class="label-text">Info délais d'analyse</span></button>
-      <button class="cat-btn" onclick="toggleCat('Suivi ATEL',this)"><span class="emoji">📋</span><span class="label-text">Suivi ATEL</span></button>
-      <button class="cat-btn" onclick="toggleCat('Demande de tarif',this)"><span class="emoji">💰</span><span class="label-text">Demande de tarif</span></button>
-      <button class="cat-btn" onclick="toggleCat('Avis / question vétérinaire',this)"><span class="emoji">🐾</span><span class="label-text">Avis / question vétérinaire</span></button>
+
+      <div class="cat-subgroup sub-resultats">📋 Résultats</div>
+      <button class="cat-btn" onclick="toggleCat('Suivi de résultats',this)">
+        <span class="emoji">🔬</span><span class="label-text">Suivi de résultats</span>
+        <span class="info-i" data-tip="Analyse en cours, sans retard constaté">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Retard de résultats',this)">
+        <span class="emoji">🕐</span><span class="label-text">Retard de résultats</span>
+        <span class="info-i" data-tip="Le client est en attente et un retard d'analyse est constaté">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Renvoi résultats',this)">
+        <span class="emoji">📤</span><span class="label-text">Renvoi résultats</span>
+        <span class="info-i" data-tip="Les résultats sont publiés mais le client ne les a pas reçus">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Demande de priorisation résultats',this)">
+        <span class="emoji">⚡</span><span class="label-text">Demande de priorisation résultats</span>
+        <span class="info-i" data-tip="Le client demande à ce que son dossier soit traité en priorité">i</span>
+      </button>
+
+      <div class="cat-subgroup sub-prelevement">🧪 Prélèvement</div>
+      <button class="cat-btn" onclick="toggleCat('Pré-analytique',this)">
+        <span class="emoji">🧫</span><span class="label-text">Pré-analytique</span>
+        <span class="info-i" data-tip="Question sur le conditionnement, la quantité ou le type de prélèvement à envoyer">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Demande d\'ajout',this)">
+        <span class="emoji">➕</span><span class="label-text">Demande d'ajout</span>
+        <span class="info-i" data-tip="Ajout d'une analyse sur un prélèvement en cours de traitement ou suite à la publication de résultats">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Annulation',this)">
+        <span class="emoji">❌</span><span class="label-text">Annulation</span>
+        <span class="info-i" data-tip="Demande d'annulation d'une ou plusieurs analyses">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Erreur de saisie',this)">
+        <span class="emoji">✏️</span><span class="label-text">Erreur de saisie</span>
+        <span class="info-i" data-tip="Erreur lors de l'enregistrement du prélèvement par le laboratoire (ex : mauvais client sélectionné)">i</span>
+      </button>
+
+      <div class="cat-subgroup sub-informations">ℹ️ Informations</div>
+      <button class="cat-btn" onclick="toggleCat('Info délais d\'analyse',this)">
+        <span class="emoji">📅</span><span class="label-text">Info délais d'analyse</span>
+        <span class="info-i" data-tip="Temps entre la réception/enregistrement du prélèvement par le labo et la réception des résultats par la clinique vétérinaire">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Suivi ATEL',this)">
+        <span class="emoji">📋</span><span class="label-text">Suivi ATEL</span>
+        <span class="info-i" data-tip="Information concernant les échantillons en attente d'élément pour conformité par Antech">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Demande de tarif',this)">
+        <span class="emoji">💰</span><span class="label-text">Demande de tarif</span>
+        <span class="info-i" data-tip="Renseignement sur les prix des analyses">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Avis / question vétérinaire',this)">
+        <span class="emoji">🐾</span><span class="label-text">Avis / question vétérinaire</span>
+        <span class="info-i" data-tip="Demande de contre-avis, expertise ou informations sur les analyses à effectuer suite à l'examen clinique de l'animal">i</span>
+      </button>
+
       <button class="cat-btn" onclick="logAppelAutre('ASV',this)"><span class="emoji">✏️</span><span class="label-text">Autre</span></button>
     </div>
 
     <!-- LOGISTIQUE -->
     <div class="col-card">
       <div class="col-header logistique">🚚 Logistique</div>
-      <button class="cat-btn" onclick="toggleCat('Gestion et suivi commande matériel',this)"><span class="emoji">📦</span><span class="label-text">Gestion et suivi commande matériel</span></button>
-      <button class="cat-btn" onclick="toggleCat('Litige logistique',this)"><span class="emoji">⚠️</span><span class="label-text">Litige logistique</span></button>
-      <button class="cat-btn" onclick="toggleCat('Organisation envoi prélèvement',this)"><span class="emoji">🚛</span><span class="label-text">Organisation envoi prélèvement</span></button>
-      <button class="cat-btn" onclick="toggleCat('Activation / réactivation point de collecte',this)"><span class="emoji">🔑</span><span class="label-text">Activation / réactivation point de collecte</span></button>
-      <button class="cat-btn" onclick="toggleCat('Confirmation prélèvement reçu',this)"><span class="emoji">✅</span><span class="label-text">Confirmation prélèvement reçu</span></button>
-      <button class="cat-btn" onclick="toggleCat('Modification des informations client',this)"><span class="emoji">👥</span><span class="label-text">Modification des informations client</span></button>
+      <button class="cat-btn" onclick="toggleCat('Gestion et suivi commande matériel',this)">
+        <span class="emoji">📦</span><span class="label-text">Gestion et suivi commande matériel</span>
+        <span class="info-i" data-tip="Commande de matériel pour le conditionnement des prélèvements (tubes, boîtes, cryotubes…)">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Litige logistique',this)">
+        <span class="emoji">⚠️</span><span class="label-text">Litige logistique</span>
+        <span class="info-i" data-tip="Problème rencontré lors de l'acheminement ou du retrait des prélèvements">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Organisation envoi prélèvement',this)">
+        <span class="emoji">🚛</span><span class="label-text">Organisation envoi prélèvement</span>
+        <span class="info-i" data-tip="Questions relatives à la mise en place d'un coursier, dépôt au labo ou envoi via Chronopost">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Activation / réactivation point de collecte',this)">
+        <span class="emoji">🔑</span><span class="label-text">Activation / réactivation point de collecte</span>
+        <span class="info-i" data-tip="Mise en place ou réactivation d'un point de collecte pour la clinique">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Confirmation prélèvement reçu',this)">
+        <span class="emoji">✅</span><span class="label-text">Confirmation prélèvement reçu</span>
+        <span class="info-i" data-tip="Le client souhaite savoir si le laboratoire a bien réceptionné son prélèvement">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Modification des informations client',this)">
+        <span class="emoji">👥</span><span class="label-text">Modification des informations client</span>
+        <span class="info-i" data-tip="Modification d'adresse email, postale ou numéro de téléphone du compte client">i</span>
+      </button>
       <button class="cat-btn" onclick="logAppelAutre('Logistique',this)"><span class="emoji">✏️</span><span class="label-text">Autre</span></button>
     </div>
 
     <!-- COMPTABILITÉ -->
     <div class="col-card">
       <div class="col-header" style="background:#F3EEFA;color:#4A2A9A">💶 Comptabilité</div>
-      <button class="cat-btn" onclick="toggleCat('Demande de facture',this)"><span class="emoji">🧾</span><span class="label-text">Demande de facture</span></button>
-      <button class="cat-btn" onclick="toggleCat('Explication facturation',this)"><span class="emoji">❓</span><span class="label-text">Explication facturation</span></button>
-      <button class="cat-btn" onclick="toggleCat('Facture réglée mais relancée',this)"><span class="emoji">⚠️</span><span class="label-text">Facture réglée mais relancée</span></button>
+      <button class="cat-btn" onclick="toggleCat('Demande de facture',this)">
+        <span class="emoji">🧾</span><span class="label-text">Demande de facture</span>
+        <span class="info-i" data-tip="Le client souhaite recevoir sa facture">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Explication facturation',this)">
+        <span class="emoji">❓</span><span class="label-text">Explication facturation</span>
+        <span class="info-i" data-tip="Le client a une question sur le montant qui lui a été facturé">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Facture réglée mais relancée',this)">
+        <span class="emoji">⚠️</span><span class="label-text">Facture réglée mais relancée</span>
+        <span class="info-i" data-tip="Le client a reçu une relance alors que sa facture a déjà été réglée">i</span>
+      </button>
       <button class="cat-btn" onclick="logAppelAutre('Comptabilité',this)"><span class="emoji">✏️</span><span class="label-text">Autre</span></button>
     </div>
 
@@ -781,6 +873,11 @@ function filterAnalyses() {
   const search = (document.getElementById('analyseSearch').value || '').toLowerCase().trim();
   const type = document.getElementById('analyseType').value;
   const espece = document.getElementById('analyseEspece').value.toLowerCase();
+  // Sync pills visually with actual filter value
+  document.querySelectorAll('.espece-pill').forEach(b => {
+    const btnVal = b.getAttribute('onclick').match(/setEspece\('([^']*)'/)?.[1] || '';
+    b.classList.toggle('active', btnVal === (document.getElementById('analyseEspece').value));
+  });
   
   let results = ANALYSES_DATA.filter(a => {
     if (type && a.type !== type) return false;
@@ -878,21 +975,48 @@ function renderAnalyseCard(a, i) {
 }
 
 function signalerErreur(analyse, btn) {
-  const now = new Date();
-  const params = new URLSearchParams({
-    action: 'signalement',
-    agent,
-    analyse,
-    date: now.toLocaleDateString('fr-FR'),
-    heure: now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})
-  }).toString();
-  const img = new Image();
-  img.src = SHEET_URL + '?' + params;
-  btn.textContent = '✓ Signalé !';
-  btn.style.color = 'var(--green)';
-  btn.style.borderColor = 'var(--green)';
-  btn.disabled = true;
-  showToast('✓ Signalement envoyé à la responsable');
+  // Create a small inline form next to the button
+  const container = btn.parentElement;
+  if (container.querySelector('.signalement-form')) return; // already open
+  btn.style.display = 'none';
+  const form = document.createElement('div');
+  form.className = 'signalement-form';
+  form.style.cssText = 'display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-top:.25rem';
+  form.innerHTML = `
+    <textarea placeholder="Décrivez l'erreur ou l'information incorrecte…" style="flex:1;min-width:200px;padding:.5rem .7rem;border:1.5px solid var(--border2);border-radius:8px;font-family:'DM Mono',monospace;font-size:.72rem;color:var(--text);background:var(--surface);resize:vertical;min-height:60px" rows="2"></textarea>
+    <div style="display:flex;gap:.4rem">
+      <button class="signalement-send" style="padding:5px 14px;border-radius:999px;background:var(--text);color:#FAFAF8;border:none;font-family:'DM Mono',monospace;font-size:.7rem;cursor:pointer">Envoyer</button>
+      <button class="signalement-cancel" style="padding:5px 12px;border-radius:999px;background:none;border:1px solid var(--border2);color:var(--text2);font-family:'DM Mono',monospace;font-size:.7rem;cursor:pointer">Annuler</button>
+    </div>`;
+  container.appendChild(form);
+  const textarea = form.querySelector('textarea');
+  textarea.focus();
+  form.querySelector('.signalement-cancel').addEventListener('click', () => {
+    form.remove();
+    btn.style.display = '';
+  });
+  form.querySelector('.signalement-send').addEventListener('click', () => {
+    const message = textarea.value.trim();
+    if (!message) { textarea.style.borderColor='var(--red)'; return; }
+    const now = new Date();
+    const params = new URLSearchParams({
+      action: 'signalement',
+      agent,
+      analyse,
+      message,
+      date: now.toLocaleDateString('fr-FR'),
+      heure: now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'})
+    }).toString();
+    const img = new Image();
+    img.src = SHEET_URL + '?' + params;
+    form.remove();
+    btn.style.display = '';
+    btn.textContent = '✓ Signalé !';
+    btn.style.color = 'var(--green)';
+    btn.style.borderColor = 'var(--green)';
+    btn.disabled = true;
+    showToast('✓ Signalement envoyé à la responsable');
+  });
 }
 
 function renderDetailItem(label, val) {
@@ -913,6 +1037,158 @@ function toggleAnalyseDetail(id, header) {
 
 // Init
 filterAnalyses();
+</script>
+
+<!-- ══ PLANNING ══ -->
+<div class="page" id="page-planning">
+  <div style="max-width:960px;margin:0 auto">
+    <div class="section-label" style="margin-bottom:1rem">Agenda vétobio — Mai 2026</div>
+
+    <!-- Légende -->
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.25rem;font-size:.7rem">
+      <span style="background:#EBF1FA;color:#0C5C8A;padding:3px 10px;border-radius:999px;font-family:'DM Mono',monospace">Veto 1 — Appels en 1</span>
+      <span style="background:#ECF5EE;color:#286038;padding:3px 10px;border-radius:999px;font-family:'DM Mono',monospace">Veto 2 — NFS</span>
+      <span style="background:#FEF4E6;color:#A05010;padding:3px 10px;border-radius:999px;font-family:'DM Mono',monospace">Veto 3 — Appels en 2 + valid + technique</span>
+      <span style="background:#EEEDFE;color:#4A2A9A;padding:3px 10px;border-radius:999px;font-family:'DM Mono',monospace">Veto 4 — Détaché</span>
+    </div>
+
+    <div id="planning-container" style="overflow-x:auto"></div>
+  </div>
+</div>
+
+<script>
+// ─── PLANNING MAI 2026 ─────────────────────────────────────────────
+const PLANNING_NOMS = ['Barcet Anna','Museux Kristina','Mateos Maria','Coudy Thomas','Gawronski Léa','Guillemot Clémence','Boucraut Corine'];
+
+// Rows = jours, cols = personnes. SEMAINES[s][jour_idx][nom_idx]
+const PLANNING_SEMAINES = [
+  {
+    label: 'Semaine 1 · 5 – 9 mai',
+    jours: ['Lun 5','Mar 6','Mer 7','Jeu 8','Ven 9'],
+    ferie: [false,false,false,false,true],
+    data: [
+      [{v:'Veto 2 bis',c:2},{v:'OFF',c:0},{v:'Veto 1 am / NFS pm',c:1},{v:'Veto 1 pm',c:1},{v:'Veto 3 TT',c:3},{v:'Veto 3',c:3},{v:'CP',c:0}],
+      [{v:'Veto 2 bis',c:2},{v:'Veto 1',c:1},{v:'Veto 2',c:2},{v:'Histo?',c:0},{v:'Veto 1 / Veto 3 pm',c:1},{v:'Veto 3',c:3},{v:'',c:0}],
+      [{v:'Veto 4',c:4},{v:'Veto 2',c:2},{v:'Veto 1 am / NFS pm',c:1},{v:'Veto 1 pm',c:1},{v:'Veto 3 (NFS am)',c:3},{v:'Veto 3',c:3},{v:'',c:0}],
+      [{v:'Veto 2 bis',c:2},{v:'Veto 4',c:4},{v:'Veto 2',c:2},{v:'Veto 1 pm',c:1},{v:'Veto 2 formation',c:2},{v:'Veto 3',c:3},{v:'',c:0}],
+      [{v:'férie',c:0},{v:'',c:0},{v:'',c:0},{v:'',c:0},{v:'',c:0},{v:'',c:0},{v:'',c:0}],
+    ]
+  },
+  {
+    label: 'Semaine 2 · 12 – 16 mai',
+    jours: ['Lun 12','Mar 13','Mer 14','Jeu 15','Ven 16'],
+    ferie: [false,false,false,true,false],
+    data: [
+      [{v:'Veto 2 bis',c:2},{v:'OFF',c:0},{v:'Veto 2',c:2},{v:'Veto 1 pm',c:1},{v:'Veto 3 TT',c:3},{v:'Veto 1 am / Veto 3',c:1},{v:'ABCD',c:0}],
+      [{v:'Veto 2',c:2},{v:'Veto 1',c:1},{v:'CP',c:0},{v:'Histo?',c:0},{v:'Veto 3',c:3},{v:'Veto 1 am / Veto 3 pm',c:1},{v:'ABCD',c:0}],
+      [{v:'Veto 4',c:4},{v:'Veto 2 pm / Veto 1 am',c:2},{v:'CP',c:0},{v:'Veto 1 pm',c:1},{v:'Veto 1 / Veto 3 pm',c:1},{v:'Veto 3',c:3},{v:'ABCD',c:0}],
+      [{v:'férie',c:0},{v:'',c:0},{v:'',c:0},{v:'',c:0},{v:'',c:0},{v:'',c:0},{v:'',c:0}],
+      [{v:'Veto 2',c:2},{v:'Veto 1',c:1},{v:'CP',c:0},{v:'CP',c:0},{v:'Veto 3 TT',c:3},{v:'Veto 3',c:3},{v:'CP',c:0}],
+    ]
+  },
+  {
+    label: 'Semaine 3 · 19 – 23 mai',
+    jours: ['Lun 19','Mar 20','Mer 21','Jeu 22','Ven 23'],
+    ferie: [false,false,false,false,false],
+    data: [
+      [{v:'Veto 2',c:2},{v:'OFF',c:0},{v:'CES',c:0},{v:'Veto 1 pm',c:1},{v:'Veto 3',c:3},{v:'Veto 1 am / Veto 3 pm',c:1},{v:'Board Cap Félin 13-15h',c:0}],
+      [{v:'Veto 4',c:4},{v:'Veto 2',c:2},{v:'CES',c:0},{v:'Veto 1 pm',c:1},{v:'Veto 3',c:3},{v:'Veto 1 am / Veto 3 pm',c:1},{v:'',c:0}],
+      [{v:'Veto 2',c:2},{v:'Veto 1 — former Clémence',c:1},{v:'CES',c:0},{v:'Veto 1 pm',c:1},{v:'Veto 3',c:3},{v:'Veto 1 am / Veto 3 pm',c:1},{v:'',c:0}],
+      [{v:'Veto 4',c:4},{v:'Veto 2',c:2},{v:'CES',c:0},{v:'Veto 1 pm',c:1},{v:'Veto 3 TT',c:3},{v:'Veto 1 am / Veto 3 pm',c:1},{v:'Cours CES HB (matin)',c:0}],
+      [{v:'Veto 2',c:2},{v:'Veto 1 TT',c:1},{v:'CES',c:0},{v:'Veto 1 pm',c:1},{v:'Veto 3 TT',c:3},{v:'Veto 1 am / Veto 3 pm',c:1},{v:'CP',c:0}],
+    ]
+  },
+  {
+    label: 'Semaine 4 · 26 – 30 mai',
+    jours: ['Lun 26','Mar 27','Mer 28','Jeu 29','Ven 30'],
+    ferie: [true,false,false,false,false],
+    data: [
+      [{v:'férie',c:0},{v:'',c:0},{v:'',c:0},{v:'',c:0},{v:'',c:0},{v:'',c:0},{v:'',c:0}],
+      [{v:'Veto 4',c:4},{v:'Veto 2',c:2},{v:'Veto 2',c:2},{v:'Veto 1 pm',c:1},{v:'Veto 3',c:3},{v:'Veto 1 am / Veto 3 pm',c:1},{v:'CP',c:0}],
+      [{v:'Veto 2 bis',c:2},{v:'Veto 4',c:4},{v:'Veto 2',c:2},{v:'Veto 1 pm',c:1},{v:'Veto 3',c:3},{v:'Veto 1 am / Veto 3 pm',c:1},{v:'CP',c:0}],
+      [{v:'Veto 4',c:4},{v:'Veto 2',c:2},{v:'Veto 2',c:2},{v:'Veto 1 pm',c:1},{v:'Veto 3 TT',c:3},{v:'Veto 1 am / Veto 3 pm',c:1},{v:'CP',c:0}],
+      [{v:'Veto 2 bis',c:2},{v:'Veto 1 TT',c:1},{v:'Veto 2',c:2},{v:'Histo?',c:0},{v:'Veto 3 TT',c:3},{v:'Veto 3',c:3},{v:'CP',c:0}],
+    ]
+  }
+];
+
+const VETO_COLORS = {
+  1: {bg:'#EBF1FA',color:'#0C5C8A'},
+  2: {bg:'#ECF5EE',color:'#286038'},
+  3: {bg:'#FEF4E6',color:'#A05010'},
+  4: {bg:'#EEEDFE',color:'#4A2A9A'},
+};
+
+function cellHTML(d) {
+  if (!d.v) return `<td style="padding:.4rem .5rem;border:1px solid var(--border);text-align:center;color:var(--text3);font-size:.65rem">—</td>`;
+  if (d.v === 'férie') return `<td style="padding:.4rem .5rem;border:1px solid var(--border);text-align:center;background:#FFF7ED;color:#9A3412;font-size:.65rem;font-weight:500">🎉 Férié</td>`;
+  const style = VETO_COLORS[d.c] ? `background:${VETO_COLORS[d.c].bg};color:${VETO_COLORS[d.c].color}` : 'color:var(--text2)';
+  return `<td style="padding:.4rem .5rem;border:1px solid var(--border);text-align:center"><span style="${style};padding:2px 6px;border-radius:5px;font-size:.65rem;white-space:nowrap;display:inline-block">${d.v}</span></td>`;
+}
+
+function toggleSemaine(idx) {
+  const body = document.getElementById('sem-body-' + idx);
+  const arrow = document.getElementById('sem-arrow-' + idx);
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  arrow.textContent = isOpen ? '▶' : '▼';
+}
+
+function renderPlanning() {
+  const container = document.getElementById('planning-container');
+  if (!container) return;
+  const thStyle = 'padding:.5rem .65rem;border:1px solid var(--border);font-weight:600;font-size:.7rem;white-space:nowrap;';
+  const thDate = thStyle + 'background:var(--surface2);color:var(--text2);text-align:left;min-width:80px';
+  const thNom  = thStyle + 'background:#F0F4FF;color:var(--accent);text-align:center;min-width:110px';
+
+  // Detect current week to auto-open it
+  const today = new Date();
+  const todayNum = today.getDate();
+  const todayMonth = today.getMonth(); // 4 = mai
+  function getOpenIdx() {
+    if (todayMonth !== 4) return 0; // default open first if not May
+    if (todayNum <= 9)  return 0;
+    if (todayNum <= 16) return 1;
+    if (todayNum <= 23) return 2;
+    return 3;
+  }
+  const openIdx = getOpenIdx();
+
+  let html = '';
+  PLANNING_SEMAINES.forEach((sem, si) => {
+    const isOpen = si === openIdx;
+    html += `
+    <div style="margin-bottom:.75rem;border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden">
+      <div onclick="toggleSemaine(${si})" style="display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem;background:var(--surface);cursor:pointer;user-select:none;gap:.75rem" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='var(--surface)'">
+        <div style="display:flex;align-items:center;gap:.6rem">
+          <span id="sem-arrow-${si}" style="font-size:.65rem;color:var(--text3)">${isOpen ? '▼' : '▶'}</span>
+          <span style="font-size:.75rem;font-weight:600;color:var(--text);font-family:'DM Mono',monospace">${sem.label}</span>
+        </div>
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap">
+          ${sem.ferie.some(f=>f) ? '<span style="font-size:.62rem;background:#FFF7ED;color:#9A3412;padding:2px 8px;border-radius:999px">🎉 Jour férié</span>' : ''}
+        </div>
+      </div>
+      <div id="sem-body-${si}" style="display:${isOpen ? 'block' : 'none'};overflow-x:auto">
+        <table style="border-collapse:collapse;font-size:.72rem;width:100%">
+          <thead><tr>
+            <th style="${thDate}">Date</th>
+            ${PLANNING_NOMS.map(n => `<th style="${thNom}">${n.split(' ')[0]}<br><span style="font-weight:400;font-size:.62rem;opacity:.75">${n.split(' ').slice(1).join(' ')}</span></th>`).join('')}
+          </tr></thead>
+          <tbody>`;
+    sem.jours.forEach((jour, ji) => {
+      const ferieRow = sem.ferie[ji];
+      const rowBg = ferieRow ? 'background:#FFFBF5' : '';
+      const dateLabel = ferieRow ? `<strong>${jour}</strong> 🎉` : `<strong>${jour}</strong>`;
+      html += `<tr style="${rowBg}">
+        <td style="padding:.45rem .65rem;border:1px solid var(--border);font-size:.7rem;white-space:nowrap;color:var(--text)">${dateLabel}</td>
+        ${sem.data[ji].map(d => cellHTML(d)).join('')}
+      </tr>`;
+    });
+    html += '</tbody></table></div></div>';
+  });
+  container.innerHTML = html;
+}
+renderPlanning();
 </script>
 
 <!-- ══ GUIDE ══ -->
