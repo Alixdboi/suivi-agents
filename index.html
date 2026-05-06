@@ -2645,9 +2645,16 @@ async function sendChat(){
   chatHistory.push({role:'user',content:q});
   var thinking=addChatMsg('thinking','<span class="chat-thinking-dots">Recherche dans les FDE</span>');
   try{
-    var resp=await fetch(CHAT_PROXY_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:chatHistory})});
-    var data=await resp.json();
-    var answer=data.answer||data.error||'Réponse vide.';
+    // JSONP pour contourner CORS
+    var answer = await new Promise(function(resolve, reject){
+      window._chatCB = function(d){ resolve(d.answer || d.error || 'Réponse vide.'); };
+      var s = document.createElement('script');
+      var payload = encodeURIComponent(JSON.stringify({messages:chatHistory}));
+      s.src = CHAT_PROXY_URL + '?data=' + payload + '&cb=_chatCB&t=' + Date.now();
+      s.onerror = function(){ reject(new Error('Erreur script')); };
+      setTimeout(function(){ reject(new Error('Timeout 30s')); }, 30000);
+      document.head.appendChild(s);
+    });
     chatHistory.push({role:'assistant',content:answer});
     var source=null;
     if(/FDE Canin/i.test(answer))source='FDE Canine v1-2026';
