@@ -410,14 +410,6 @@ td.primary{color:var(--text)}
       </button>
 
       <div class="cat-subgroup sub-prelevement">🚛 Envoi prélèvement</div>
-      <button class="cat-btn" onclick="toggleCat('Commande coursier',this)">
-        <span class="emoji">🚚</span><span class="label-text">Commande coursier</span>
-        <span class="info-i" data-tip="Le client souhaite commander un passage coursier pour l'enlèvement de son prélèvement">i</span>
-      </button>
-      <button class="cat-btn" onclick="toggleCat('Dépose labo / Étiquette Chronopost',this)">
-        <span class="emoji">📬</span><span class="label-text">Dépose labo / Étiquette Chronopost</span>
-        <span class="info-i" data-tip="Le client souhaite déposer son prélèvement au labo ou obtenir une étiquette Chronopost">i</span>
-      </button>
       <button class="cat-btn" onclick="toggleCat('Annulation envoi prélèvement',this)">
         <span class="emoji">❌</span><span class="label-text">Annulation envoi prélèvement</span>
         <span class="info-i" data-tip="Le client ne souhaite plus envoyer son prélèvement — annulation du passage coursier à faire">i</span>
@@ -543,7 +535,7 @@ td.primary{color:var(--text)}
       <option>Suivi ATEL</option><option>Demande de tarif</option>
       <option>Avis / question vétérinaire</option>
       <option>Gestion et suivi commande matériel</option>
-      <option>Commande coursier</option><option>Dépose labo / Étiquette Chronopost</option><option>Litige logistique</option><option>Organisation envoi prélèvement</option>
+      <option>Litige logistique</option><option>Organisation envoi prélèvement</option>
       <option>Demande de facture</option><option>Explication facturation</option>
       <option>Facture réglée mais relancée</option><option>Comptabilité - Autres</option>
     </select>
@@ -2544,7 +2536,7 @@ document.addEventListener('mouseout', e => {
 <style>
 #chat-fab{position:fixed;bottom:24px;right:24px;width:52px;height:52px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.18);z-index:9000;border:none;transition:transform .15s,background .15s;font-size:1.3rem}
 #chat-fab:hover{background:#1e4a7a;transform:scale(1.08)}
-#chat-window{position:fixed;bottom:88px;right:24px;width:380px;max-width:calc(100vw - 32px);height:520px;max-height:calc(100vh - 110px);background:var(--surface);border:1.5px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.15);display:none;flex-direction:column;z-index:8999;overflow:hidden}
+#chat-window{position:fixed;bottom:88px;right:24px;width:520px;max-width:calc(100vw - 32px);height:650px;max-height:calc(100vh - 110px);background:var(--surface);border:1.5px solid var(--border);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.15);display:none;flex-direction:column;z-index:8999;overflow:hidden}
 #chat-window.open{display:flex}
 #chat-header{background:var(--accent);color:#fff;padding:.75rem 1rem;display:flex;align-items:center;gap:.6rem;flex-shrink:0}
 #chat-header .chat-title{font-size:.78rem;font-weight:600;letter-spacing:.04em;flex:1}
@@ -2552,7 +2544,7 @@ document.addEventListener('mouseout', e => {
 #chat-close{background:none;border:none;color:#fff;font-size:1.1rem;cursor:pointer;padding:2px 6px;border-radius:6px}
 #chat-close:hover{background:rgba(255,255,255,.2)}
 #chat-messages{flex:1;overflow-y:auto;padding:.85rem;display:flex;flex-direction:column;gap:.6rem}
-.chat-msg{max-width:88%;padding:.6rem .85rem;border-radius:12px;font-size:.76rem;line-height:1.55;word-break:break-word}
+.chat-msg{max-width:88%;padding:.7rem 1rem;border-radius:12px;font-size:.82rem;line-height:1.55;word-break:break-word}
 .chat-msg.bot{background:var(--surface2);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px}
 .chat-msg.bot .msg-source{font-size:.6rem;color:var(--accent);display:block;margin-top:4px;opacity:.85}
 .chat-msg.user{background:var(--accent);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
