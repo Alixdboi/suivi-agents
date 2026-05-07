@@ -410,6 +410,14 @@ td.primary{color:var(--text)}
       </button>
 
       <div class="cat-subgroup sub-prelevement">🚛 Envoi prélèvement</div>
+      <button class="cat-btn" onclick="toggleCat('Commande coursier',this)">
+        <span class="emoji">🚚</span><span class="label-text">Commande coursier</span>
+        <span class="info-i" data-tip="Le client souhaite commander un passage coursier pour l'enlèvement de son prélèvement">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Dépose labo / Étiquette Chronopost',this)">
+        <span class="emoji">📬</span><span class="label-text">Dépose labo / Étiquette Chronopost</span>
+        <span class="info-i" data-tip="Le client souhaite déposer son prélèvement au labo ou obtenir une étiquette Chronopost">i</span>
+      </button>
       <button class="cat-btn" onclick="toggleCat('Annulation envoi prélèvement',this)">
         <span class="emoji">❌</span><span class="label-text">Annulation envoi prélèvement</span>
         <span class="info-i" data-tip="Le client ne souhaite plus envoyer son prélèvement — annulation du passage coursier à faire">i</span>
@@ -535,7 +543,7 @@ td.primary{color:var(--text)}
       <option>Suivi ATEL</option><option>Demande de tarif</option>
       <option>Avis / question vétérinaire</option>
       <option>Gestion et suivi commande matériel</option>
-      <option>Litige logistique</option><option>Organisation envoi prélèvement</option>
+      <option>Commande coursier</option><option>Dépose labo / Étiquette Chronopost</option><option>Litige logistique</option><option>Organisation envoi prélèvement</option>
       <option>Demande de facture</option><option>Explication facturation</option>
       <option>Facture réglée mais relancée</option><option>Comptabilité - Autres</option>
     </select>
@@ -2562,11 +2570,11 @@ document.addEventListener('mouseout', e => {
 #chat-setup button{padding:.4rem .8rem;background:var(--accent);color:#fff;border:none;border-radius:6px;font-family:'DM Mono',monospace;font-size:.7rem;cursor:pointer}
 #chat-disclaimer{font-size:.58rem;color:var(--text3);text-align:center;padding:0 .65rem .4rem;flex-shrink:0}
 #chat-context{padding:.75rem;border-bottom:1px solid var(--border);background:var(--surface2);flex-shrink:0;display:none;flex-direction:column;gap:.5rem}
-#chat-context .ctx-title{font-size:.7rem;color:var(--text2);font-family:'DM Mono',monospace;font-weight:600;margin-bottom:.2rem}
+#chat-context .ctx-title{font-size:.7rem;color:var(--text2);font-family:'DM Mono',monospace;font-weight:600}
 #chat-context .ctx-row{display:flex;gap:.5rem}
-#chat-context select{flex:1;padding:.4rem .6rem;border:1.5px solid var(--border2);border-radius:7px;font-family:'DM Mono',monospace;font-size:.72rem;background:var(--bg);color:var(--text);outline:none;cursor:pointer}
+#chat-context select{flex:1;padding:.4rem .5rem;border:1.5px solid var(--border2);border-radius:7px;font-family:'DM Mono',monospace;font-size:.7rem;background:var(--bg);color:var(--text);outline:none;cursor:pointer}
 #chat-context select:focus{border-color:var(--accent)}
-#chat-context .ctx-hint{font-size:.62rem;color:var(--text3);text-align:center}
+#chat-context .ctx-hint{font-size:.6rem;color:var(--text3);text-align:center}
 
 </style>
 
@@ -2604,7 +2612,7 @@ document.addEventListener('mouseout', e => {
       <select id="ctx-type">
         <option value="">🔬 Type d'analyse...</option>
         <option value="Bilan biochimique / hémato / urines">Bilan biochimique / hémato / urines</option>
-        <option value="Agents infectieux (sérologies & PCR)">Agents infectieux (sérologies &amp; PCR)</option>
+        <option value="Agents infectieux (sérologies et PCR)">Agents infectieux (sérologies &amp; PCR)</option>
         <option value="Endocrinologie / hormones">Endocrinologie / hormones</option>
         <option value="Reproduction / élevage">Reproduction / élevage</option>
         <option value="Histopathologie / cytologie">Histopathologie / cytologie</option>
@@ -2678,22 +2686,14 @@ async function sendChat(){
   var input=document.getElementById('chat-input');
   var btn=document.getElementById('chat-send');
   var q=input.value.trim();if(!q)return;
-  var espece=document.getElementById('ctx-espece').value;
-  var typeAnalyse=document.getElementById('ctx-type').value;
-  var context='';
-  if(espece||typeAnalyse){
-    context='[Contexte: ';
-    if(espece)context+='Espèce='+espece;
-    if(espece&&typeAnalyse)context+=' / ';
-    if(typeAnalyse)context+='Type='+typeAnalyse;
-    context+='] ';
-  }
-  var qDisplay=q;
-  var qWithContext=context?context+q:q;
+  var espece=document.getElementById('ctx-espece')?document.getElementById('ctx-espece').value:'';
+  var typeA=document.getElementById('ctx-type')?document.getElementById('ctx-type').value:'';
+  var ctx='';
+  if(espece||typeA){ctx='[Contexte: '+(espece||'')+(espece&&typeA?' / ':'')+(typeA||'')+'] ';}
   input.value='';input.style.height='auto';btn.disabled=true;
-  var displayLabel=context?'<span style="font-size:.65rem;opacity:.75;display:block;margin-bottom:3px">'+context.replace(/[\[\]]/g,'')+'</span>':'' ;
-  addChatMsg('user',displayLabel+qDisplay.replace(/</g,'&lt;'));
-  chatHistory.push({role:'user',content:qWithContext});
+  var label=ctx?'<span style="font-size:.65rem;opacity:.75;display:block;margin-bottom:2px">'+ctx.replace(/[\[\]]/g,'')+'</span>':'';
+  addChatMsg('user',label+q.replace(/</g,'&lt;'));
+  chatHistory.push({role:'user',content:ctx+q});
   var thinking=addChatMsg('thinking','<span class="chat-thinking-dots">Recherche dans les FDE</span>');
   try{
     // JSONP pour contourner CORS
