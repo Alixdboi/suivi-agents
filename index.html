@@ -410,6 +410,14 @@ td.primary{color:var(--text)}
       </button>
 
       <div class="cat-subgroup sub-prelevement">🚛 Envoi prélèvement</div>
+      <button class="cat-btn" onclick="toggleCat('Commande coursier',this)">
+        <span class="emoji">🚚</span><span class="label-text">Commande coursier</span>
+        <span class="info-i" data-tip="Le client souhaite commander un passage coursier pour l'enlèvement de son prélèvement">i</span>
+      </button>
+      <button class="cat-btn" onclick="toggleCat('Dépose labo / Étiquette Chronopost',this)">
+        <span class="emoji">📬</span><span class="label-text">Dépose labo / Étiquette Chronopost</span>
+        <span class="info-i" data-tip="Le client souhaite déposer son prélèvement au labo ou obtenir une étiquette Chronopost">i</span>
+      </button>
       <button class="cat-btn" onclick="toggleCat('Annulation envoi prélèvement',this)">
         <span class="emoji">❌</span><span class="label-text">Annulation envoi prélèvement</span>
         <span class="info-i" data-tip="Le client ne souhaite plus envoyer son prélèvement — annulation du passage coursier à faire">i</span>
@@ -535,7 +543,7 @@ td.primary{color:var(--text)}
       <option>Suivi ATEL</option><option>Demande de tarif</option>
       <option>Avis / question vétérinaire</option>
       <option>Gestion et suivi commande matériel</option>
-      <option>Litige logistique</option><option>Organisation envoi prélèvement</option>
+      <option>Commande coursier</option><option>Dépose labo / Étiquette Chronopost</option><option>Litige logistique</option><option>Organisation envoi prélèvement</option>
       <option>Demande de facture</option><option>Explication facturation</option>
       <option>Facture réglée mais relancée</option><option>Comptabilité - Autres</option>
     </select>
